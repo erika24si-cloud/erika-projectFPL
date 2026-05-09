@@ -1,47 +1,54 @@
-import './custom.css';
-import BiodataDiri from './tugas-2/BiodataDiri';
+import React, { Suspense, lazy } from "react";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
-  return <BiodataDiri />;
-}
+import LoadingScreen from "./components/project/LoadingScreen"; 
 
-export default App;
+const MainLayout = lazy(() => import("./layouts/project/MainLayout"));
+const AuthLayout = lazy(() => import("./layouts/project/AuthLayout"));
 
-/*
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+const Login = lazy(() => import("./pages/auth/project/Login"));
+const Register = lazy(() => import("./pages/auth/project/Register"));
 
-function App() {
-  const [count, setCount] = useState(0)
+const Hero = lazy(() => import("./components/project/Hero"));
+const Stats = lazy(() => import("./components/project/Stats"));
+const Booking = lazy(() => import("./components/project/Booking"));
+const Services = lazy(() => import("./components/project/Services"));
+const Facilities = lazy(() => import("./components/project/Facilities"));
+const Groomers = lazy(() => import("./components/project/Groomers"));
+const Blog = lazy(() => import("./components/project/Blog"));
+const About = lazy(() => import("./pages/About"));
+const ServicesPage = lazy(() => import("./pages/Services"));
 
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Suspense fallback={<LoadingScreen />}>
+      <Routes>
+        
+        <Route element={<MainLayout />}>
+          <Route 
+            path="/" 
+            element={
+              <>
+                <Hero />
+                <Stats />
+                <Booking />
+                <Services />
+                <Facilities />
+                <Groomers />
+                <Blog />
+              </>
+            } 
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<ServicesPage />} />
+        </Route>
+
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+
+      </Routes>
+    </Suspense>
+  );
 }
-
-export default App
-*/
-
