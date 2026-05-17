@@ -1,48 +1,31 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-
 import LoadingScreen from "./components/project/LoadingScreen"; 
 
 const MainLayout = lazy(() => import("./layouts/project/MainLayout"));
+const Home = lazy(() => import("./pages/Home"));
+const Appointments = lazy(() => import("./pages/Appointments")); // Baru
+const ServicesPage = lazy(() => import("./pages/Services"));
+const Customers = lazy(() => import("./pages/Customers")); // Baru
 const AuthLayout = lazy(() => import("./layouts/project/AuthLayout"));
 
 const Login = lazy(() => import("./pages/auth/project/Login"));
 const Register = lazy(() => import("./pages/auth/project/Register"));
-
-const Hero = lazy(() => import("./components/project/Hero"));
-const Stats = lazy(() => import("./components/project/Stats"));
-const Booking = lazy(() => import("./components/project/Booking"));
-const Services = lazy(() => import("./components/project/Services"));
-const Facilities = lazy(() => import("./components/project/Facilities"));
-const Groomers = lazy(() => import("./components/project/Groomers"));
-const Blog = lazy(() => import("./components/project/Blog"));
-const About = lazy(() => import("./pages/About"));
-const ServicesPage = lazy(() => import("./pages/Services"));
 
 export default function App() {
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
         
+        {/* Grup Rute Dashboard (Menggunakan MainLayout) */}
         <Route element={<MainLayout />}>
-          <Route 
-            path="/" 
-            element={
-              <>
-                <Hero />
-                <Stats />
-                <Booking />
-                <Services />
-                <Facilities />
-                <Groomers />
-                <Blog />
-              </>
-            } 
-          />
-          <Route path="/about" element={<About />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/appointments" element={<Appointments />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/customers" element={<Customers />} />
         </Route>
 
+        {/* Grup Rute Autentikasi (Menggunakan AuthLayout) */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

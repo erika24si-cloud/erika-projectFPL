@@ -1,46 +1,56 @@
-import React from "react";
-import { NavLink } from "react-router-dom"; 
+import React, { useState, useEffect } from "react";
 
 export default function Navbar() {
-  const activeClass = ({ isActive }) => 
-    isActive 
-      ? "font-bold text-[#212153] transition-colors" 
-      : "font-medium text-gray-500 hover:text-[#212153] transition-colors";
+  // State untuk menyimpan nama user, default-nya "Admin"
+  const [userName, setUserName] = useState("Admin");
+
+  useEffect(() => {
+    // Ambil data user dari localStorage saat komponen dimuat
+    const storedUser = localStorage.getItem("mew_user");
+    
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Jika ada fullName (dari halaman register), gunakan itu
+      if (parsedUser.fullName) {
+        setUserName(parsedUser.fullName);
+      } 
+      // Jika login pakai email saja tanpa register nama (fallback)
+      else if (parsedUser.email) {
+        // Ambil kata sebelum '@' di email sebagai nama
+        setUserName(parsedUser.email.split('@')[0]);
+      }
+    }
+  }, []);
+
+  // Fungsi untuk mengambil huruf pertama dari nama untuk Avatar
+  const getInitial = (name) => {
+    return name ? name.charAt(0).toUpperCase() : "A";
+  };
 
   return (
-    <nav className="flex justify-between items-center py-6 px-6 lg:px-20 bg-white">
+    <header className="bg-white h-20 shadow-sm border-b border-gray-100 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
       
-      <NavLink to="/" className="text-3xl font-extrabold text-[#212153]">
-        Mew
-      </NavLink>
-
-      <div className="hidden md:flex gap-8">
-        <NavLink to="/" className={activeClass}>
-          Home
-        </NavLink>
-
-        <NavLink to="/about" className={activeClass}>
-          About
-        </NavLink>
-
-        <NavLink to="/services" className={activeClass}>
-          Services
-        </NavLink>
-
-        <NavLink to="/practice" className={activeClass}>
-          Practice
-        </NavLink>
-      </div>
-
+      {/* Bagian Kiri: Salam */}
       <div>
-        <NavLink 
-          to="/register" 
-          className="border-2 border-[#212153] text-[#212153] px-6 py-2 rounded-full font-bold hover:bg-[#212153] hover:text-white transition-colors"
-        >
-          Sign up
-        </NavLink>
+        {/* Tampilkan nama secara dinamis */}
+        <h2 className="text-xl font-bold text-[#212153]">Selamat Datang, {userName} 👋</h2>
+        <p className="text-sm text-gray-500">Kelola data klinik Mew Anda di sini</p>
       </div>
 
-    </nav>
+      {/* Bagian Kanan: Profil User */}
+      <div className="flex items-center gap-4">
+        <div className="hidden md:block text-right">
+          {/* Tampilkan nama di profil */}
+          <p className="text-sm font-bold text-[#212153]">{userName}</p>
+          <p className="text-xs text-gray-500">Administrator</p>
+        </div>
+        
+        {/* Avatar Profil Bulat dengan Inisial Dinamis */}
+        <div className="w-10 h-10 bg-orange-100 rounded-full border-2 border-[#FF7A00] flex items-center justify-center font-extrabold text-[#FF7A00] uppercase">
+          {getInitial(userName)}
+        </div>
+      </div>
+
+    </header>
   );
 }
