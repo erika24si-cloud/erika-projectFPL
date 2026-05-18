@@ -1,4 +1,6 @@
-import React from "react";
+import { Button } from "../components/project/Button";
+import { Badge } from "../components/project/Badge";
+import { StatCard } from "../components/project/StatCard";
 
 export default function Home() {
   // Data dummy untuk tabel ringkasan
@@ -22,56 +24,32 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Stat Cards Grid */}
+      {/* 2. PENERAPAN STAT CARDS (Lihat betapa pendeknya sekarang!) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        
-        {/* Card 1 */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all flex items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center text-3xl shrink-0">
-            📅
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 font-bold mb-1 uppercase tracking-wider">Jadwal Hari Ini</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-3xl font-black text-[#212153]">24</h3>
-              <span className="text-xs text-green-500 font-bold mb-1 border border-green-200 bg-green-50 px-2 py-0.5 rounded-md">+3 dari kemarin</span>
-            </div>
-          </div>
-        </div>
-        
-        {/* Card 2 */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all flex items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-orange-50 text-[#FF7A00] flex items-center justify-center text-3xl shrink-0">
-            🐾
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 font-bold mb-1 uppercase tracking-wider">Total Pasien (Bulan)</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-3xl font-black text-[#212153]">156</h3>
-              <span className="text-xs text-green-500 font-bold mb-1 border border-green-200 bg-green-50 px-2 py-0.5 rounded-md">+12%</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all flex items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center text-3xl shrink-0">
-            💰
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 font-bold mb-1 uppercase tracking-wider">Pendapatan (Hari Ini)</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-3xl font-black text-[#212153]">Rp 2.4Jt</h3>
-            </div>
-          </div>
-        </div>
-
+        <StatCard 
+          title="Jadwal Hari Ini" 
+          value="24" 
+          icon="📅" 
+          color="blue" 
+        />
+        <StatCard 
+          title="Total Pasien (Bulan)" 
+          value="156" 
+          icon="🐾" 
+          color="orange" 
+        />
+        <StatCard 
+          title="Pendapatan (Hari Ini)" 
+          value="Rp 2.4Jt" 
+          icon="💰" 
+          color="green" 
+        />
       </div>
 
-      {/* Main Content Area (Split into 2 columns on large screens) */}
+      {/* Main Content Area */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Left Side: Recent Appointments Table (Takes 2 columns) */}
+        {/* Left Side: Recent Appointments Table */}
         <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-xl font-extrabold text-[#212153]">Jadwal Mendatang</h2>
@@ -94,9 +72,13 @@ export default function Home() {
                     <td className="py-4 px-6 text-gray-600 text-sm">{apt.pet}</td>
                     <td className="py-4 px-6 font-bold text-[#212153] text-sm">{apt.time}</td>
                     <td className="py-4 px-6">
-                      <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${apt.status === 'Selesai' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-orange-50 text-[#FF7A00] border-orange-200'}`}>
-                        {apt.status}
-                      </span>
+                      
+                      {/* 3. PENERAPAN BADGE STATUS PADA TABEL */}
+                      <Badge 
+                        text={apt.status} 
+                        status={apt.status === 'Selesai' ? 'success' : 'warning'} 
+                      />
+
                     </td>
                   </tr>
                 ))}
@@ -107,22 +89,27 @@ export default function Home() {
 
         {/* Right Side: Quick Actions & Notifications */}
         <div className="flex flex-col gap-6">
+          
           {/* Quick Actions */}
           <div className="bg-gradient-to-br from-[#212153] to-gray-800 rounded-3xl p-6 text-white shadow-lg">
             <h2 className="text-lg font-extrabold mb-4">Aksi Cepat</h2>
             <div className="flex flex-col gap-3">
-              <button className="w-full bg-white/10 hover:bg-white/20 text-left px-5 py-3 rounded-xl font-bold transition-colors flex items-center gap-3">
-                <span className="bg-[#FF7A00] w-8 h-8 rounded-lg flex items-center justify-center text-xl">+</span>
+              
+              {/* 4. PENERAPAN BUTTON KOMPONEN */}
+              <Button variant="primary" className="w-full !justify-start" size="md">
+                <span className="bg-white/20 w-7 h-7 rounded-lg flex items-center justify-center text-lg mr-2">+</span>
                 Buat Jadwal Baru
-              </button>
-              <button className="w-full bg-white/10 hover:bg-white/20 text-left px-5 py-3 rounded-xl font-bold transition-colors flex items-center gap-3">
-                <span className="bg-[#FF7A00] w-8 h-8 rounded-lg flex items-center justify-center text-xl">+</span>
+              </Button>
+
+              <Button variant="primary" className="w-full !justify-start" size="md">
+                <span className="bg-white/20 w-7 h-7 rounded-lg flex items-center justify-center text-lg mr-2">+</span>
                 Tambah Pasien
-              </button>
+              </Button>
+
             </div>
           </div>
 
-          {/* Mini Notification */}
+          {/* Mini Notification (Bisa kamu jadikan komponen reusable selanjutnya!) */}
           <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <h2 className="text-lg font-extrabold text-[#212153] mb-4">Pemberitahuan</h2>
             <div className="flex gap-4 items-start border-b border-gray-50 pb-4 mb-4">
@@ -140,8 +127,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
 
     </div>
