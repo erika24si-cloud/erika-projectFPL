@@ -1,7 +1,19 @@
+/**
+ * SelectBox - Dropdown pilihan dengan label dan validasi error
+ * Props:
+ *  - label: string (opsional)
+ *  - options: Array<{ value, label }>
+ *  - error: string (opsional)
+ *  - value: string
+ *  - onChange: function
+ *  - className: string (opsional)
+ */
 export function SelectBox({ label, options = [], error, value, onChange, className = "", ...props }) {
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
-      {label && <label className="text-sm font-bold text-[#212153] ml-1">{label}</label>}
+      {label && (
+        <label className="text-sm font-bold text-[#212153] ml-1">{label}</label>
+      )}
       <select
         value={value}
         onChange={onChange}
@@ -15,7 +27,9 @@ export function SelectBox({ label, options = [], error, value, onChange, classNa
           <option key={idx} value={opt.value}>{opt.label}</option>
         ))}
       </select>
-      {error && <span className="text-xs font-bold text-rose-500 ml-1">{error}</span>}
+      {error && (
+        <span className="text-xs font-bold text-rose-500 ml-1">{error}</span>
+      )}
     </div>
   );
 }
