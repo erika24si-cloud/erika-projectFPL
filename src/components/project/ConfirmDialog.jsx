@@ -1,15 +1,3 @@
-/**
- * ConfirmDialog - Dialog konfirmasi aksi berbahaya (hapus, dll.)
- * Props:
- *  - isOpen: boolean
- *  - onClose: function
- *  - onConfirm: function
- *  - title: string
- *  - description: string
- *  - confirmText: string (default: "Ya, Hapus")
- *  - cancelText: string (default: "Batal")
- *  - variant: 'danger' | 'warning' (default: 'danger')
- */
 export function ConfirmDialog({
   isOpen,
   onClose,
@@ -36,7 +24,6 @@ export function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
         onClick={onClose}

@@ -1,12 +1,3 @@
-/**
- * Textarea - Area teks multi-baris dengan label dan validasi error
- * Props:
- *  - label: string (opsional)
- *  - error: string (opsional)
- *  - rows: number (default: 4)
- *  - className: string (opsional)
- *  - ...props: atribut textarea HTML lainnya
- */
 export function Textarea({ label, error, rows = 4, className = "", ...props }) {
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>

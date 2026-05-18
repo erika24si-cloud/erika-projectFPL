@@ -1,9 +1,3 @@
-/**
- * Button - Tombol serbaguna
- * Props:
- *  - variant: 'primary' | 'danger' | 'outline' | 'ghost'
- *  - size: 'sm' | 'md' | 'lg'
- */
 export function Button({ children, variant = 'primary', size = 'md', onClick, className = '', type = 'button', disabled = false, ...props }) {
   const base = "font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95";
 

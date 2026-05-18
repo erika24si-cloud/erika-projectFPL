@@ -1,7 +1,3 @@
-/**
- * InputField - Input teks serbaguna dengan styling konsisten
- * Props: semua atribut HTML input standar + className
- */
 export function InputField({ className = "", ...props }) {
   return (
     <input

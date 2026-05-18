@@ -1,15 +1,6 @@
-/**
- * SearchBar - Input pencarian dengan ikon kaca pembesar
- * Props:
- *  - placeholder: string
- *  - value: string
- *  - onChange: function
- *  - className: string (opsional)
- */
 export function SearchBar({ placeholder = "Cari...", value, onChange, className = "" }) {
   return (
     <div className={`relative ${className}`}>
-      {/* Ikon kaca pembesar */}
       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
         <svg
           xmlns="http://www.w3.org/2000/svg"

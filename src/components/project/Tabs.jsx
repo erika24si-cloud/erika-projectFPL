@@ -1,10 +1,3 @@
-/**
- * Tabs - Navigasi tab horizontal
- * Props:
- *  - tabs: Array<{ id: string, label: string, icon?: string }>
- *  - activeTab: string (id tab yang aktif)
- *  - onChange: function(id)
- */
 export function Tabs({ tabs = [], activeTab, onChange }) {
   return (
     <div className="flex gap-1 bg-slate-100 p-1 rounded-xl w-fit">

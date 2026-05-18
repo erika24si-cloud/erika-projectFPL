@@ -1,12 +1,3 @@
-/**
- * StatCard - Kartu statistik ringkasan
- * Props:
- *  - title: string
- *  - value: string | number
- *  - icon: string (emoji)
- *  - color: 'orange' | 'blue' | 'green' | 'purple'
- *  - trend: { value: number, isUp: boolean } (opsional)
- */
 export function StatCard({ title, value, icon, color = "orange", trend }) {
   const iconBgs = {
     orange: "bg-orange-100 text-orange-600",

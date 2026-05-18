@@ -1,13 +1,3 @@
-/**
- * ToggleSwitch - Tombol toggle on/off (cocok untuk status Aktif/Nonaktif layanan)
- * Props:
- *  - checked: boolean
- *  - onChange: function(boolean)
- *  - label: string (opsional)
- *  - labelOff: string (opsional, teks saat off, default "Nonaktif")
- *  - labelOn: string (opsional, teks saat on, default "Aktif")
- *  - disabled: boolean (opsional)
- */
 export function ToggleSwitch({
   checked,
   onChange,

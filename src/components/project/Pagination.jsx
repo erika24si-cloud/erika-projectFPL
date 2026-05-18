@@ -1,10 +1,3 @@
-/**
- * Pagination - Navigasi halaman untuk tabel/list
- * Props:
- *  - currentPage: number (1-indexed)
- *  - totalPages: number
- *  - onPageChange: function(page)
- */
 export function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
 
@@ -12,15 +5,12 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
 
   return (
     <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
-      {/* Info */}
       <p className="text-sm text-slate-500 font-medium">
         Halaman <span className="font-bold text-[#212153]">{currentPage}</span> dari{" "}
         <span className="font-bold text-[#212153]">{totalPages}</span>
       </p>
 
-      {/* Tombol Halaman */}
       <div className="flex items-center gap-1">
-        {/* Prev */}
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}

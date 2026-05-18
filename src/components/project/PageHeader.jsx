@@ -1,10 +1,3 @@
-/**
- * PageHeader - Header standar untuk setiap halaman dashboard
- * Props:
- *  - title: string
- *  - subtitle: string (opsional)
- *  - action: ReactNode (opsional, tombol di kanan)
- */
 export function PageHeader({ title, subtitle, action }) {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-100 pb-6">

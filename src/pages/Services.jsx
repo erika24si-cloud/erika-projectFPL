@@ -162,7 +162,8 @@ export default function Services() {
             <InputField type="text" placeholder="Contoh: Rp 120.000" value={form.price} onChange={set("price")} className="w-full" />
             {errors.price && <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.price}</span>}
           </div>
-          <ToggleSwitch label="Status Layanan" checked={form.status} onChange={(val) => setForm((f) => ({ ...f, status: val }))} labelOn="Aktif" labelOff="Nonaktif" />
+          <ToggleSwitch label="Status Layanan" checked={form.status} onChange={(val) => setForm((f) => ({ ...f, status: val }))} 
+          labelOn="Aktif" labelOff="Nonaktif" />
         </form>
       </Modal>
 

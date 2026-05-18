@@ -1,14 +1,5 @@
 import { useEffect } from "react";
 
-/**
- * Toast - Notifikasi pop-up sementara di pojok layar
- * Props:
- *  - message: string
- *  - type: 'success' | 'error' | 'warning' | 'info'
- *  - isVisible: boolean
- *  - onClose: function
- *  - duration: number (ms, default 3000)
- */
 export function Toast({ message, type = "success", isVisible, onClose, duration = 3000 }) {
   useEffect(() => {
     if (!isVisible) return;
@@ -30,7 +21,6 @@ export function Toast({ message, type = "success", isVisible, onClose, duration 
   return (
     <div className="fixed bottom-6 right-6 z-[100] animate-in slide-in-from-bottom-4 fade-in duration-300">
       <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border shadow-lg max-w-sm ${s.bg}`}>
-        {/* Garis warna di kiri */}
         <div className={`w-1 h-10 rounded-full shrink-0 ${s.bar}`} />
         <span className="text-xl">{s.icon}</span>
         <p className={`text-sm font-bold flex-1 ${s.text}`}>{message}</p>

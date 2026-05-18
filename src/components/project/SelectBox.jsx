@@ -1,13 +1,3 @@
-/**
- * SelectBox - Dropdown pilihan dengan label dan validasi error
- * Props:
- *  - label: string (opsional)
- *  - options: Array<{ value, label }>
- *  - error: string (opsional)
- *  - value: string
- *  - onChange: function
- *  - className: string (opsional)
- */
 export function SelectBox({ label, options = [], error, value, onChange, className = "", ...props }) {
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
