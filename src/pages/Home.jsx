@@ -5,6 +5,15 @@ import { Toast } from "../components/project/Toast";
 import { PageHeader } from "../components/project/PageHeader";
 import { StatCard } from "../components/project/StatCard";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"; 
+
 const recentAppointments = [
   { id: 1, owner: "Budi Santoso",  pet: "Milo (Kucing)",  time: "10:00 WIB", status: "Menunggu" },
   { id: 2, owner: "Siti Aminah",   pet: "Max (Anjing)",   time: "13:30 WIB", status: "Selesai"  },
@@ -12,11 +21,10 @@ const recentAppointments = [
 ];
 
 const notifications = [
-  { id: 1, title: "Stok Vaksin Menipis",   desc: "Sisa 5 dosis vaksin Rabies.",              dot: "bg-[#FF7A00]" },
+  { id: 1, title: "Stok Vaksin Menipis",   desc: "Sisa 5 dosis vaksin Rabies.",             dot: "bg-[#FF7A00]" },
   { id: 2, title: "Review Baru",           desc: "Budi S. memberikan bintang 5.",             dot: "bg-blue-500"  },
   { id: 3, title: "Jadwal Baru Masuk",     desc: "Siti A. memesan grooming untuk besok.",     dot: "bg-emerald-500" },
 ];
-
 
 export default function Home() {
   const [toast, setToast] = useState({ visible: false, message: "", type: "success" });
@@ -27,7 +35,6 @@ export default function Home() {
   return (
     <div className="w-full">
 
-      {/* ── Header ── */}
       <PageHeader
         title="Dashboard Overview"
         subtitle="Selamat datang kembali! Berikut adalah ringkasan klinik Anda hari ini."
@@ -38,9 +45,8 @@ export default function Home() {
         }
       />
 
-      {/* ── Stat Cards ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <StatCard title="Jadwal Hari Ini"       value="24"        icon="📅" color="blue"   />
+        <StatCard title="Jadwal Hari Ini"      value="24"       icon="📅" color="blue"   />
         <StatCard title="Total Pasien (Bulan)"  value="156"       icon="🐾" color="orange" />
         <StatCard title="Pendapatan (Hari Ini)" value="Rp 2.4Jt"  icon="💰" color="green"  />
       </div>
@@ -48,41 +54,39 @@ export default function Home() {
       {/* ── Main Content ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        {/* Tabel Jadwal (inline card) */}
-        <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+        {/* ── 2. Penerapan Shadcn UI Table di Tabel Jadwal (inline card) ── */}
+        <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden p-6">
+          <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-extrabold text-[#212153]">Jadwal Mendatang</h2>
             <button className="text-sm text-[#FF7A00] font-bold hover:underline">Lihat Semua →</button>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50/50">
-                  {["Pelanggan", "Hewan", "Waktu", "Status"].map((h) => (
-                    <th key={h} className="py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {recentAppointments.map((apt) => (
-                  <tr key={apt.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-4 px-6 font-bold text-[#212153] text-sm">{apt.owner}</td>
-                    <td className="py-4 px-6 text-gray-600 text-sm">{apt.pet}</td>
-                    <td className="py-4 px-6 font-bold text-[#212153] text-sm">{apt.time}</td>
-                    <td className="py-4 px-6">
-                      <Badge text={apt.status} status={apt.status === "Selesai" ? "success" : "warning"} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="font-bold text-gray-400 uppercase tracking-wider text-xs">Pelanggan</TableHead>
+                <TableHead className="font-bold text-gray-400 uppercase tracking-wider text-xs">Hewan</TableHead>
+                <TableHead className="font-bold text-gray-400 uppercase tracking-wider text-xs">Waktu</TableHead>
+                <TableHead className="font-bold text-gray-400 uppercase tracking-wider text-xs text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentAppointments.map((apt) => (
+                <TableRow key={apt.id} className="hover:bg-gray-50/50 transition-colors">
+                  <TableCell className="font-bold text-[#212153] text-sm">{apt.owner}</TableCell>
+                  <TableCell className="text-gray-600 text-sm">{apt.pet}</TableCell>
+                  <TableCell className="font-bold text-[#212153] text-sm">{apt.time}</TableCell>
+                  <TableCell className="text-right">
+                    <Badge text={apt.status} status={apt.status === "Selesai" ? "success" : "warning"} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
 
-        {/* Kolom Kanan */}
         <div className="flex flex-col gap-6">
 
-          {/* Aksi Cepat */}
           <div className="bg-gradient-to-br from-[#212153] to-gray-800 rounded-3xl p-6 text-white shadow-lg">
             <h2 className="text-lg font-extrabold mb-4">Aksi Cepat</h2>
             <div className="flex flex-col gap-3">
@@ -99,7 +103,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Pemberitahuan (inline) */}
           <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <h2 className="text-lg font-extrabold text-[#212153] mb-4">Pemberitahuan</h2>
             {notifications.map((n) => (
@@ -116,7 +119,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Toast ── */}
       <Toast
         message={toast.message}
         type={toast.type}
