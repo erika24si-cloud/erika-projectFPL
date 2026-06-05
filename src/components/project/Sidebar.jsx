@@ -49,7 +49,13 @@ export default function Sidebar() {
           <span className="text-lg transition-transform duration-250 group-hover:scale-110">👥</span> 
           <span className="text-sm tracking-wide">Customers & Pets</span>
         </NavLink>
+
+        <NavLink to="/membership" className={activeClass}>
+          <span className="text-lg transition-transform duration-250 group-hover:scale-110">⭐</span> 
+          <span className="text-sm tracking-wide">Membership</span>
+        </NavLink>
       </div>
+      
 
       {/* Bagian Bawah: Tombol Keluar yang Elegan */}
       <div className="border-t border-slate-100/80 pt-5 mt-auto">

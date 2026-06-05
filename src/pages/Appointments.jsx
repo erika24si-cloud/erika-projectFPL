@@ -39,16 +39,17 @@ import {
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const allAppointments = [
-  { id: 1, owner: "Budi Santoso",  pet: "Milo (Kucing)",   service: "Veterinary Care",     date: "17 Mei 2026", time: "10:00 WIB", status: "Menunggu"     },
-  { id: 2, owner: "Siti Aminah",   pet: "Max (Anjing)",    service: "Premium Grooming",    date: "17 Mei 2026", time: "13:30 WIB", status: "Selesai"      },
-  { id: 3, owner: "Reza Rahadian", pet: "Oreo (Kelinci)",  service: "Pet Hotel & Daycare", date: "18 Mei 2026", time: "15:00 WIB", status: "Menunggu"     },
-  { id: 4, owner: "Dewi Lestari",  pet: "Coco (Anjing)",   service: "Premium Grooming",    date: "18 Mei 2026", time: "09:00 WIB", status: "Dikonfirmasi" },
-  { id: 5, owner: "Andi Wijaya",   pet: "Luna (Kucing)",   service: "Veterinary Care",     date: "19 Mei 2026", time: "11:00 WIB", status: "Selesai"      },
+// ── 1. SESUAIKAN DATA AWAL DENGAN STRUKTUR CSV ──
+const initialAppointmentsFromCSV = [
+  { id_customer: "CUST0796", nama_lengkap: "Rina Pratama", nama_hewan: "Snowy", jenis_hewan: "Anjing", layanan: "Veterinary Care", tanggal_transaksi: "2026-05-17", waktu: "10:00 WIB", status_aktif: "Menunggu" },
+  { id_customer: "CUST0797", nama_lengkap: "Citra Utami",  nama_hewan: "Luna",  jenis_hewan: "Hamster", layanan: "Premium Grooming",  tanggal_transaksi: "2026-05-17", waktu: "13:30 WIB", status_aktif: "Selesai" },
+  { id_customer: "CUST0001", nama_lengkap: "Indah Putri",  nama_hewan: "Milo",  jenis_hewan: "Kucing",  layanan: "Pet Hotel & Daycare", tanggal_transaksi: "2026-05-18", waktu: "15:00 WIB", status_aktif: "Menunggu" },
+  { id_customer: "CUST0002", nama_lengkap: "Gina Saputra", nama_hewan: "Milo",  jenis_hewan: "Hamster", layanan: "Premium Grooming",  tanggal_transaksi: "2026-05-18", waktu: "09:00 WIB", status_aktif: "Dikonfirmasi" },
+  { id_customer: "CUST0003", nama_lengkap: "Aditya Yoga",  nama_hewan: "Chiko", jenis_hewan: "Anjing", layanan: "Veterinary Care", tanggal_transaksi: "2026-05-19", waktu: "11:00 WIB", status_aktif: "Selesai" },
 ];
 
 const TABS = [
-  { id: "semua",        label: "Semua",         icon: "📋" },
+  { id: "semua",         label: "Semua",         icon: "📋" },
   { id: "menunggu",     label: "Menunggu",      icon: "⏳" },
   { id: "dikonfirmasi", label: "Dikonfirmasi", icon: "✅" },
   { id: "selesai",      label: "Selesai",       icon: "🏁" },
@@ -69,6 +70,9 @@ const ITEMS_PER_PAGE = 3;
 const EMPTY_FORM = { owner: "", pet: "", service: "", date: "", time: "" };
 
 export default function Appointments() {
+  // ── 2. FIX BUG LOGIKA: SEKARANG DATA MENGGUNAKAN STATE REACT ──
+  const [appointments, setAppointments] = useState(initialAppointmentsFromCSV);
+  
   const [search,      setSearch]      = useState("");
   const [activeTab,   setActiveTab]   = useState("semua");
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,10 +84,11 @@ export default function Appointments() {
   const showToast = (message, type = "success") =>
     setToast({ visible: true, message, type });
 
-  const filtered = allAppointments.filter((apt) => {
-    const matchTab    = activeTab === "semua" || apt.status.toLowerCase() === activeTab;
-    const matchSearch = apt.owner.toLowerCase().includes(search.toLowerCase()) ||
-                        apt.pet.toLowerCase().includes(search.toLowerCase());
+  // ── 3. SESUAIKAN FUNGSI FILTER BERDASARKAN PROPERTI CSV ──
+  const filtered = appointments.filter((apt) => {
+    const matchTab    = activeTab === "semua" || apt.status_aktif.toLowerCase() === activeTab;
+    const matchSearch = apt.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
+                        apt.nama_hewan.toLowerCase().includes(search.toLowerCase());
     return matchTab && matchSearch;
   });
 
@@ -92,8 +97,22 @@ export default function Appointments() {
 
   const handleTabChange = (id) => { setActiveTab(id); setCurrentPage(1); };
 
+  // ── 4. IMPLEMENTASI TAMBAH DATA STRUKTUR CSV KEDALAM STATE ──
   const handleSave = (e) => {
     e.preventDefault();
+    
+    const newAppointment = {
+      id_customer: `CUST${Date.now()}`, // ID Unik generator sementara
+      nama_lengkap: form.owner,
+      nama_hewan: form.pet,
+      jenis_hewan: "Kucing", // Default dinamis atau bisa dikembangkan via form nanti
+      layanan: form.service,
+      tanggal_transaksi: form.date,
+      waktu: `${form.time} WIB`,
+      status_aktif: "Menunggu"
+    };
+
+    setAppointments([newAppointment, ...appointments]); // Data bertambah di paling atas tabel
     setShowModal(false);
     setForm(EMPTY_FORM);
     showToast("Jadwal baru berhasil ditambahkan!", "success");
@@ -111,12 +130,7 @@ export default function Appointments() {
       />
 
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 mt-6">
-        
-        <Tabs 
-          value={activeTab} 
-          onValueChange={handleTabChange} 
-          className="w-full md:w-auto"
-        >
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full md:w-auto">
           <TabsList className="bg-gray-100/80 p-1 rounded-2xl border border-gray-200/50 h-auto flex flex-wrap md:flex-nowrap gap-1">
             {TABS.map((tab) => (
               <TabsTrigger
@@ -158,23 +172,26 @@ export default function Appointments() {
               </TableRow>
             </TableHeader>
             <TableBody>
+              {/* ── 5. MAPPING DI DALAM ROW TABEL SESUAI STRUKTUR BARU ── */}
               {paginated.map((apt) => (
-                <TableRow key={apt.id} className="hover:bg-gray-50/50 transition-colors">
+                <TableRow key={apt.id_customer} className="hover:bg-gray-50/50 transition-colors">
                   <TableCell>
-                    <p className="font-bold text-[#212153] text-sm">{apt.owner}</p>
-                    <p className="text-gray-500 text-xs mt-1">{apt.pet}</p>
+                    <p className="font-bold text-[#212153] text-sm">{apt.nama_lengkap}</p>
+                    <p className="text-gray-500 text-xs mt-1">{apt.nama_hewan} <span className="text-gray-400">({apt.jenis_hewan})</span></p>
                   </TableCell>
-                  <TableCell className="font-medium text-sm text-gray-700">{apt.service}</TableCell>
+                  <TableCell className="font-medium text-sm text-gray-700">{apt.layanan}</TableCell>
                   <TableCell>
-                    <p className="font-bold text-[#212153] text-sm">{apt.date}</p>
-                    <p className="text-gray-500 text-xs mt-0.5">{apt.time}</p>
+                    <p className="font-bold text-[#212153] text-sm">{apt.tanggal_transaksi}</p>
+                    <p className="text-gray-500 text-xs mt-0.5">{apt.waktu}</p>
                   </TableCell>
                   <TableCell>
-                    <Badge text={apt.status} status={getBadgeStatus(apt.status)} />
+                    <div className="w-fit">
+                      <Badge text={apt.status_aktif} status={getBadgeStatus(apt.status_aktif)} />
+                    </div>
                   </TableCell>
-                  {/* ── 🛠️ PERBAIKAN: Padding Kolom Aksi Sejajar ── */}
                   <TableCell className="text-right pr-6">
-                    <Button variant="danger" size="sm" onClick={() => setDeleteId(apt.id)}>Hapus</Button>
+                    {/* Menggunakan id_customer untuk trigger hapus */}
+                    <Button variant="danger" size="sm" onClick={() => setDeleteId(apt.id_customer)}>Hapus</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -185,6 +202,7 @@ export default function Appointments() {
         </div>
       )}
 
+      {/* ── MODAL INPUT FORM ── */}
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="sm:max-w-[500px] bg-white rounded-3xl p-6">
           <DialogHeader>
@@ -198,7 +216,7 @@ export default function Appointments() {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-bold text-[#212153] ml-1">Nama Hewan <span className="text-rose-500">*</span></label>
-              <InputField type="text" placeholder="Contoh: Milo (Kucing)" value={form.pet} onChange={set("pet")} className="w-full" required />
+              <InputField type="text" placeholder="Contoh: Milo" value={form.pet} onChange={set("pet")} className="w-full" required />
             </div>
             <SelectBox label="Layanan" options={SERVICE_OPTIONS} value={form.service} onChange={set("service")} required />
             <div className="grid grid-cols-2 gap-4">
@@ -220,6 +238,7 @@ export default function Appointments() {
         </DialogContent>
       </Dialog>
 
+      {/* ── MODAL ALERT DELETE: SEKARANG REAL-TIME BISA MENGHAPUS DATA ── */}
       <AlertDialog open={deleteId !== null} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent className="bg-white rounded-3xl p-6">
           <AlertDialogHeader>
@@ -233,7 +252,9 @@ export default function Appointments() {
               <Button variant="outline" onClick={() => setDeleteId(null)}>Batal</Button>
             </AlertDialogCancel>
             <AlertDialogAction asChild>
+              {/* ── 6. LOGIKA UNTUK FILTER BUANG DATA YANG DIHAPUS DARI STATE ── */}
               <Button variant="danger" onClick={() => {
+                setAppointments(appointments.filter((item) => item.id_customer !== deleteId));
                 showToast("Jadwal berhasil dihapus.", "error");
                 setDeleteId(null);
               }}>

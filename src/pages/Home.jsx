@@ -14,10 +14,32 @@ import {
   TableRow,
 } from "@/components/ui/table"; 
 
-const recentAppointments = [
-  { id: 1, owner: "Budi Santoso",  pet: "Milo (Kucing)",  time: "10:00 WIB", status: "Menunggu" },
-  { id: 2, owner: "Siti Aminah",   pet: "Max (Anjing)",   time: "13:30 WIB", status: "Selesai"  },
-  { id: 3, owner: "Reza Rahadian", pet: "Oreo (Kelinci)", time: "15:00 WIB", status: "Menunggu" },
+// ── 1. Mengubah Data Statis Menjadi Data Dummy dari CSV ──
+const dummyRecentAppointments = [
+  { 
+    id_customer: "CUST0796", 
+    nama_lengkap: "Rina Pratama", 
+    nama_hewan: "Snowy", 
+    jenis_hewan: "Anjing", 
+    tanggal_transaksi: "2025-11-19", 
+    status_aktif: "Aktif" 
+  },
+  { 
+    id_customer: "CUST0797", 
+    nama_lengkap: "Citra Utami", 
+    nama_hewan: "Luna", 
+    jenis_hewan: "Hamster", 
+    tanggal_transaksi: "2024-05-01", 
+    status_aktif: "Aktif" 
+  },
+  { 
+    id_customer: "CUST0001", 
+    nama_lengkap: "Indah Putri", 
+    nama_hewan: "Milo", 
+    jenis_hewan: "Kucing", 
+    tanggal_transaksi: "2024-03-12", 
+    status_aktif: "Tidak Aktif" 
+  },
 ];
 
 const notifications = [
@@ -71,13 +93,24 @@ export default function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentAppointments.map((apt) => (
-                <TableRow key={apt.id} className="hover:bg-gray-50/50 transition-colors">
-                  <TableCell className="font-bold text-[#212153] text-sm">{apt.owner}</TableCell>
-                  <TableCell className="text-gray-600 text-sm">{apt.pet}</TableCell>
-                  <TableCell className="font-bold text-[#212153] text-sm">{apt.time}</TableCell>
+              {/* ── 3. Mapping Data CSV Dummy ke Tabel ── */}
+              {dummyRecentAppointments.map((apt) => (
+                <TableRow key={apt.id_customer} className="hover:bg-gray-50/50 transition-colors">
+                  <TableCell className="font-bold text-[#212153] text-sm">
+                    {apt.nama_lengkap}
+                  </TableCell>
+                  <TableCell className="text-gray-600 text-sm">
+                    {apt.nama_hewan} <span className="text-xs text-gray-400">({apt.jenis_hewan})</span>
+                  </TableCell>
+                  <TableCell className="font-bold text-[#212153] text-sm">
+                    {apt.tanggal_transaksi}
+                  </TableCell>
                   <TableCell className="text-right">
-                    <Badge text={apt.status} status={apt.status === "Selesai" ? "success" : "warning"} />
+                    {/* Logika Badge disesuaikan: 'Aktif' jadi success, 'Tidak Aktif' jadi warning */}
+                    <Badge 
+                      text={apt.status_aktif} 
+                      status={apt.status_aktif === "Aktif" ? "success" : "warning"} 
+                    />
                   </TableCell>
                 </TableRow>
               ))}

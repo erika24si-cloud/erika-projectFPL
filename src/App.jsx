@@ -7,6 +7,7 @@ const Home = lazy(() => import("./pages/Home"));
 const Appointments = lazy(() => import("./pages/Appointments")); // Baru
 const ServicesPage = lazy(() => import("./pages/Services"));
 const Customers = lazy(() => import("./pages/Customers")); // Baru
+const Membership = lazy(() => import("./pages/Membership"));
 const AuthLayout = lazy(() => import("./layouts/project/AuthLayout"));
 
 const Login = lazy(() => import("./pages/auth/project/Login"));
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/customers" element={<Customers />} />
+          <Route path="/membership" element={<Membership />} />
         </Route>
 
         {/* Grup Rute Autentikasi (Menggunakan AuthLayout) */}
