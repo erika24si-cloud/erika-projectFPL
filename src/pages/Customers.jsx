@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "../components/project/Button";
 import { PageHeader } from "../components/project/PageHeader";
 import { StatCard } from "../components/project/StatCard";
@@ -8,7 +8,6 @@ import { InputField } from "../components/project/InputField";
 import { Pagination } from "../components/project/Pagination";
 import { EmptyState } from "../components/project/EmptyState";
 
-// ── 1. UPGRADE POP-UP MENGGUNAKAN SHADCN UI ──
 import {
   Dialog,
   DialogContent,
@@ -28,7 +27,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-// ── 2. SINKRONISASI DATA UTAMA BERDASARKAN SKEMA RIIL CSV ──
 const INITIAL_CUSTOMERS_FROM_CSV = [
   { id_customer: "CUST0001", nama_lengkap: "Indah Putri",  email: "indput842@gmail.com", nomor_hp: "089371700720", pets: ["Milo (Kucing)"],                 tanggal_daftar: "2024-03-05" },
   { id_customer: "CUST0002", nama_lengkap: "Gina Saputra", email: "ginsap127@gmail.com", nomor_hp: "087757859142", pets: ["Milo (Hamster)"],                tanggal_daftar: "2025-06-13" },
@@ -40,7 +38,6 @@ const INITIAL_CUSTOMERS_FROM_CSV = [
 const EMPTY_FORM = { name: "", email: "", phone: "", pets: "" };
 const ITEMS_PER_PAGE = 3;
 
-// Helper inisial nama untuk avatar bulat
 const getInitials = (name) =>
   name ? name.split(" ").map((w) => w[0]).join("").substring(0, 2).toUpperCase() : "??";
 
@@ -57,7 +54,8 @@ export default function Customers() {
   const showToast = (message, type = "success") =>
     setToast({ visible: true, message, type });
 
-  // ── 3. PENYESUAIAN PENCARIAN BERDASARKAN PROPERTI STRUKTUR BARU ──
+  const nameInputRef = useRef(null);
+
   const filtered = customers.filter((c) =>
     c.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
     c.email.toLowerCase().includes(search.toLowerCase())
@@ -75,7 +73,6 @@ export default function Customers() {
     return Object.keys(e).length === 0;
   };
 
-  // ── 4. HANDLING SUBMIT DATA BARU FORMAT TIMELINE CSV (YYYY-MM-DD) ──
   const handleSave = (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -107,7 +104,12 @@ export default function Customers() {
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const openAdd = () => { setForm(EMPTY_FORM); setErrors({}); setShowModal(true); };
+  const openAdd = () => {
+    setForm(EMPTY_FORM);
+    setErrors({});
+    setShowModal(true);
+    setTimeout(() => nameInputRef.current?.focus(), 100);
+  };
 
   const totalPets = customers.reduce((acc, c) => acc + c.pets.length, 0);
 
@@ -200,11 +202,28 @@ export default function Customers() {
           </DialogHeader>
           
           <form onSubmit={handleSave} className="flex flex-col gap-4 my-2">
+            {/* Field Nama Lengkap — menggunakan nameInputRef untuk auto-focus */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-bold text-[#212153] ml-1">
+                Nama Lengkap <span className="text-rose-500">*</span>
+              </label>
+              <input
+                ref={nameInputRef}
+                type="text"
+                placeholder="Contoh: Budi Santoso"
+                value={form.name}
+                onChange={set("name")}
+                className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 focus:bg-white focus:border-[#FF7A00] focus:ring-4 focus:ring-orange-500/10 hover:border-slate-300 transition-all duration-200 w-full"
+                required
+              />
+              {errors.name && <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.name}</span>}
+            </div>
+
+            {/* Field lainnya */}
             {[
-              { field: "name",  label: "Nama Lengkap",      type: "text",  placeholder: "Contoh: Budi Santoso",                  required: true  },
               { field: "email", label: "Email",             type: "email", placeholder: "Contoh: budi@email.com",                required: true  },
               { field: "phone", label: "Nomor Telepon",      type: "tel",   placeholder: "Contoh: 0812-3456-7890",                required: true  },
-              { field: "pets",  label: "Hewan Peliharaan", type: "text",  placeholder: "Pisahkan koma: Milo (Kucing), Snowy (Anjing)", required: false },
+              { field: "pets",  label: "Hewan Peliharaan",  type: "text",  placeholder: "Pisahkan koma: Milo (Kucing), Snowy (Anjing)", required: false },
             ].map(({ field, label, type, placeholder, required }) => (
               <div key={field} className="flex flex-col gap-1.5">
                 <label className="text-sm font-bold text-[#212153] ml-1">

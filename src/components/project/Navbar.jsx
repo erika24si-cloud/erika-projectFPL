@@ -21,8 +21,6 @@ export default function Navbar() {
   };
 
   return (
-    // SEKARANG: Menggunakan efek Glassmorphism (bg-white/80 + backdrop-blur)
-    // Membuat navbar menyatu secara artistik dengan konten saat di-scroll
     <header className="sticky top-0 bg-white/80 backdrop-blur-md h-20 flex items-center justify-between px-6 lg:px-10 z-30 shrink-0 border-b border-slate-100/60 transition-all duration-300">
       
       {/* Bagian Kiri: Salam */}

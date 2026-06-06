@@ -39,7 +39,6 @@ import {
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// ── 1. SESUAIKAN DATA AWAL DENGAN STRUKTUR CSV ──
 const initialAppointmentsFromCSV = [
   { id_customer: "CUST0796", nama_lengkap: "Rina Pratama", nama_hewan: "Snowy", jenis_hewan: "Anjing", layanan: "Veterinary Care", tanggal_transaksi: "2026-05-17", waktu: "10:00 WIB", status_aktif: "Menunggu" },
   { id_customer: "CUST0797", nama_lengkap: "Citra Utami",  nama_hewan: "Luna",  jenis_hewan: "Hamster", layanan: "Premium Grooming",  tanggal_transaksi: "2026-05-17", waktu: "13:30 WIB", status_aktif: "Selesai" },
@@ -70,7 +69,6 @@ const ITEMS_PER_PAGE = 3;
 const EMPTY_FORM = { owner: "", pet: "", service: "", date: "", time: "" };
 
 export default function Appointments() {
-  // ── 2. FIX BUG LOGIKA: SEKARANG DATA MENGGUNAKAN STATE REACT ──
   const [appointments, setAppointments] = useState(initialAppointmentsFromCSV);
   
   const [search,      setSearch]      = useState("");
@@ -84,7 +82,6 @@ export default function Appointments() {
   const showToast = (message, type = "success") =>
     setToast({ visible: true, message, type });
 
-  // ── 3. SESUAIKAN FUNGSI FILTER BERDASARKAN PROPERTI CSV ──
   const filtered = appointments.filter((apt) => {
     const matchTab    = activeTab === "semua" || apt.status_aktif.toLowerCase() === activeTab;
     const matchSearch = apt.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
@@ -97,22 +94,20 @@ export default function Appointments() {
 
   const handleTabChange = (id) => { setActiveTab(id); setCurrentPage(1); };
 
-  // ── 4. IMPLEMENTASI TAMBAH DATA STRUKTUR CSV KEDALAM STATE ──
   const handleSave = (e) => {
     e.preventDefault();
     
     const newAppointment = {
-      id_customer: `CUST${Date.now()}`, // ID Unik generator sementara
-      nama_lengkap: form.owner,
+      id_customer: `CUST${Date.now()}`, 
       nama_hewan: form.pet,
-      jenis_hewan: "Kucing", // Default dinamis atau bisa dikembangkan via form nanti
+      jenis_hewan: "Kucing", 
       layanan: form.service,
       tanggal_transaksi: form.date,
       waktu: `${form.time} WIB`,
       status_aktif: "Menunggu"
     };
 
-    setAppointments([newAppointment, ...appointments]); // Data bertambah di paling atas tabel
+    setAppointments([newAppointment, ...appointments]); 
     setShowModal(false);
     setForm(EMPTY_FORM);
     showToast("Jadwal baru berhasil ditambahkan!", "success");
