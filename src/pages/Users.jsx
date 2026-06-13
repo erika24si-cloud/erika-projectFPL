@@ -275,7 +275,7 @@ export default function Users() {
           <AlertDialogHeader>
             <AlertDialogTitle className="text-lg font-extrabold text-[#212153]">Hapus User?</AlertDialogTitle>
             <AlertDialogDescription className="text-sm text-gray-500">
-              Akun user ini akan dihapus permanen dari database Supabase.
+              Akun user ini akan dihapus permanen.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2 sm:gap-0">
