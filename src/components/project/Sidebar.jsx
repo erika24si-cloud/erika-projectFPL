@@ -14,8 +14,7 @@ export default function Sidebar() {
       setToast({ visible: true, message: "Gagal logout. Coba lagi.", type: "error" });
       return;
     }
-    // AuthContext otomatis reset user → ProtectedRoute redirect ke /login
-    navigate("/login");
+    navigate("/");
   };
 
   const activeClass = ({ isActive }) =>
@@ -33,28 +32,28 @@ export default function Sidebar() {
 
       {/* Menu */}
       <div className="flex flex-col gap-2 flex-1">
-        <NavLink to="/" className={activeClass} end>
-          <span className="text-lg transition-transform duration-250 group-hover:scale-110">📊</span>
+        <NavLink to="/dashboard" className={activeClass} end>
+          <span className="text-lg group-hover:scale-110 transition-transform">📊</span>
           <span className="text-sm tracking-wide">Overview</span>
         </NavLink>
-        <NavLink to="/appointments" className={activeClass}>
-          <span className="text-lg transition-transform duration-250 group-hover:scale-110">📅</span>
+        <NavLink to="/dashboard/appointments" className={activeClass}>
+          <span className="text-lg group-hover:scale-110 transition-transform">📅</span>
           <span className="text-sm tracking-wide">Appointments</span>
         </NavLink>
-        <NavLink to="/customers" className={activeClass}>
-          <span className="text-lg transition-transform duration-250 group-hover:scale-110">👥</span>
-          <span className="text-sm tracking-wide">Customers & Pets</span>
-        </NavLink>
-        <NavLink to="/users" className={activeClass}>
-          <span className="text-lg transition-transform duration-250 group-hover:scale-110">👤</span>
-          <span className="text-sm tracking-wide">Manage User</span>
-        </NavLink>
-          <NavLink to="/services" className={activeClass}>
-          <span className="text-lg transition-transform duration-250 group-hover:scale-110">📋</span>
+        <NavLink to="/dashboard/services" className={activeClass}>
+          <span className="text-lg group-hover:scale-110 transition-transform">📋</span>
           <span className="text-sm tracking-wide">Manage Services</span>
         </NavLink>
-        <NavLink to="/membership" className={activeClass}>
-          <span className="text-lg transition-transform duration-250 group-hover:scale-110">🎖️</span>
+        <NavLink to="/dashboard/customers" className={activeClass}>
+          <span className="text-lg group-hover:scale-110 transition-transform">👥</span>
+          <span className="text-sm tracking-wide">Customers & Pets</span>
+        </NavLink>
+        <NavLink to="/dashboard/users" className={activeClass}>
+          <span className="text-lg group-hover:scale-110 transition-transform">👤</span>
+          <span className="text-sm tracking-wide">Manajemen User</span>
+        </NavLink>
+        <NavLink to="/dashboard/membership" className={activeClass}>
+          <span className="text-lg group-hover:scale-110 transition-transform">🎖️</span>
           <span className="text-sm tracking-wide">Membership</span>
         </NavLink>
       </div>
@@ -65,7 +64,7 @@ export default function Sidebar() {
           onClick={handleLogout}
           className="w-full flex items-center gap-3.5 py-3 px-5 text-rose-500 hover:bg-rose-50/60 hover:text-rose-600 rounded-xl transition-all duration-200 font-bold text-sm text-left group"
         >
-          <span className="text-lg transition-transform duration-200 group-hover:-translate-x-0.5">🚪</span>
+          <span className="text-lg group-hover:-translate-x-0.5 transition-transform">🚪</span>
           <span className="tracking-wide">Keluar</span>
         </button>
       </div>

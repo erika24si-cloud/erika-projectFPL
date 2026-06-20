@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoadingScreen from "./components/project/LoadingScreen";
 import ProtectedRoute from "./components/project/ProtectedRoute";
 
+const Landing     = lazy(() => import("./pages/Landing"));
 const MainLayout  = lazy(() => import("./layouts/project/MainLayout"));
 const Home        = lazy(() => import("./pages/Home"));
 const Appointments= lazy(() => import("./pages/Appointments"));
@@ -19,20 +20,24 @@ export default function App() {
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
 
-        {/* ── Rute Dashboard (hanya bisa diakses jika sudah login) ── */}
+        {/* ── Halaman Pertama: Landing Page (publik) ── */}
+        <Route path="/" element={<Landing />} />
+
+        {/* ── Rute Dashboard Admin (hanya bisa diakses jika sudah login) ── */}
         <Route
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <MainLayout />
             </ProtectedRoute>
           }
         >
-          <Route path="/"            element={<Home />} />
-          <Route path="/appointments"element={<Appointments />} />
-          <Route path="/services"    element={<ServicesPage />} />
-          <Route path="/customers"   element={<Customers />} />
-          <Route path="/users"       element={<Users />} />
-          <Route path="/membership"  element={<Membership />} />
+          <Route index             element={<Home />} />
+          <Route path="appointments" element={<Appointments />} />
+          <Route path="services"     element={<ServicesPage />} />
+          <Route path="customers"    element={<Customers />} />
+          <Route path="users"        element={<Users />} />
+          <Route path="membership"   element={<Membership />} />
         </Route>
 
         {/* ── Rute Autentikasi ── */}

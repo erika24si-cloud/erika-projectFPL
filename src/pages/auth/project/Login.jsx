@@ -49,7 +49,7 @@ export default function Login() {
 
     // Login sukses — AuthContext otomatis update via onAuthStateChange
     showToast("Login berhasil! Selamat datang kembali 🐾", "success");
-    setTimeout(() => navigate("/"), 600);
+    setTimeout(() => navigate("/dashboard"), 600);
   };
 
   return (
