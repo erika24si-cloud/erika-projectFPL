@@ -430,11 +430,11 @@ export default function Landing() {
               Mulai perjalanan merawat hewan kesayangan bersama komunitas Mew.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/daftar"
+              <Link to="/register"
                 className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95 text-base flex items-center gap-2">
                 🐾 Daftar Gratis Sekarang
               </Link>
-              <Link to="/masuk"
+              <Link to="/login"
                 className="text-indigo-200 hover:text-white font-semibold text-sm transition-colors flex items-center gap-1">
                 Sudah punya akun? Masuk di sini →
               </Link>

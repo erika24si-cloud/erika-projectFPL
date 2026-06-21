@@ -5,7 +5,7 @@ import { useMembershipTiers } from "../hooks/useMembershipTiers";
 /* ── Styling visual per tier ── */
 const TIER_STYLE = {
   Silver:   { icon:"🥈", badge:"bg-slate-100 text-slate-600",   gradient:"from-slate-400 to-slate-500",   border:"border-slate-200",  bg:"bg-slate-50"  },
-  Gold:     { icon:"🥇", badge:"bg-amber-100 text-amber-700",   gradient:"from-amber-400 to-orange-500",  border:"border-amber-200",  bg:"bg-amber-50"  },
+  Gold:     { icon:"🥇", badge:"bg-amber-eh100 text-amber-700",   gradient:"from-amber-400 to-orange-500",  border:"border-amber-200",  bg:"bg-amber-50"  },
   Platinum: { icon:"💎", badge:"bg-purple-100 text-purple-700", gradient:"from-purple-500 to-indigo-600", border:"border-purple-200", bg:"bg-purple-50" },
 };
 
