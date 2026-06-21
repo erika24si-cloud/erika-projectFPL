@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabase";
 import { InputField } from "../../../components/project/InputField";
+import { PasswordInput } from "../../../components/project/PasswordInput";
 import { Button } from "../../../components/project/Button";
 import { Toast } from "../../../components/project/Toast";
 
@@ -61,19 +62,19 @@ export default function Register() {
         id:         data.user.id,
         full_name:  fullName,
         email:      email,
-        role:       "admin",
+        role:       "member",
         created_at: new Date().toISOString(),
       });
     }
 
-    showToast("Akun berhasil dibuat! Silakan login. 🐾", "success");
-    setTimeout(() => navigate("/login"), 1500);
+    showToast("Akun berhasil dibuat! Selamat datang 🐾", "success");
+    setTimeout(() => navigate("/member"), 1000);
   };
 
   return (
     <div className="flex flex-col">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-black text-[#212153] mb-2">Create Account 🐶</h2>
+        <h2 className="text-3xl font-black text-[#212153] mb-2">Registrasi Akun 🐶</h2>
         <p className="text-gray-500 text-sm">Bergabung dan kelola klinik hewan kamu.</p>
       </div>
 
@@ -118,12 +119,10 @@ export default function Register() {
           <label className="text-sm font-bold text-[#212153] ml-1">
             Password <span className="text-rose-500">*</span>
           </label>
-          <InputField
-            type="password"
+          <PasswordInput
             placeholder="Buat password (min. 6 karakter)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full"
           />
           {errors.password && (
             <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.password}</span>
@@ -135,12 +134,10 @@ export default function Register() {
           <label className="text-sm font-bold text-[#212153] ml-1">
             Konfirmasi Password <span className="text-rose-500">*</span>
           </label>
-          <InputField
-            type="password"
+          <PasswordInput
             placeholder="Ulangi password kamu"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            className="w-full"
           />
           {errors.confirm && (
             <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.confirm}</span>

@@ -2,36 +2,50 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 /* ── Data ── */
-const STATS    = [{ v:"2500+",l:"Happy Pets"},{v:"1850+",l:"Members"},{v:"1300+",l:"Treatments"}];
+const STATS    = [
+  { v:"500+",  l:"Hewan Dirawat"    },
+  { v:"300+",  l:"Pelanggan Aktif"  },
+  { v:"50+",   l:"Perawatan/Bulan"  },
+];
 const SERVICES = [
-  { icon:"🩺", title:"Veterinary Care",    desc:"Pemeriksaan medis, vaksinasi, dan pengobatan oleh dokter berpengalaman." },
-  { icon:"✂️", title:"Premium Grooming",   desc:"Mandi, potong kuku, bersihkan telinga, dan perapian bulu profesional." },
-  { icon:"🏨", title:"Pet Hotel & Daycare",desc:"Penitipan harian atau menginap dengan fasilitas AC dan ruang bermain." },
-  { icon:"💉", title:"Vaccination",        desc:"Vaksin lengkap dan terjadwal untuk menjaga kesehatan hewan Anda." },
+  { icon:"🩺", title:"Perawatan Medis",      desc:"Pemeriksaan kesehatan umum, diagnosis penyakit, dan pengobatan oleh dokter hewan berpengalaman." },
+  { icon:"✂️", title:"Grooming Premium",     desc:"Mandi bersih, potong kuku, bersihkan telinga, dan perapian bulu untuk hewan kesayangan Anda." },
+  { icon:"🏨", title:"Penitipan Hewan",      desc:"Titipkan hewan Anda dengan aman — fasilitas nyaman, bersih, dan dipantau sepanjang hari." },
+  { icon:"💉", title:"Vaksinasi",            desc:"Program vaksin lengkap dan terjadwal sesuai jenis dan usia hewan peliharaan Anda." },
 ];
 const FACILITIES = [
-  { icon:"✂️", title:"Premium Grooming",  desc:"Peralatan modern dan aman untuk semua jenis hewan." },
-  { icon:"🐕", title:"Training Facility", desc:"Trainer bersertifikat untuk melatih hewan peliharaan Anda." },
-  { icon:"❤️", title:"Health Check",      desc:"Pemeriksaan rutin dengan peralatan diagnostik lengkap." },
-  { icon:"🌿", title:"Natural Care",      desc:"Perawatan berbahan alami, aman untuk semua hewan." },
-  { icon:"💊", title:"Vaccination",       desc:"Jadwal vaksinasi sesuai usia dan jenis hewan." },
-  { icon:"🐾", title:"Family Training",   desc:"Program pelatihan khusus untuk hewan keluarga." },
+  { icon:"✂️", title:"Grooming Profesional", desc:"Peralatan grooming modern dan aman untuk semua jenis hewan." },
+  { icon:"🐕", title:"Area Latihan",         desc:"Ruang latihan luas dengan trainer bersertifikat dan berpengalaman." },
+  { icon:"❤️", title:"Cek Kesehatan Rutin",  desc:"Pemeriksaan berkala dengan alat diagnostik lengkap dan modern." },
+  { icon:"🌿", title:"Perawatan Alami",      desc:"Menggunakan bahan-bahan alami yang aman dan ramah lingkungan." },
+  { icon:"💊", title:"Program Vaksinasi",    desc:"Jadwal vaksin teratur sesuai usia dan kebutuhan hewan Anda." },
+  { icon:"🐾", title:"Pelatihan Keluarga",   desc:"Program pelatihan hewan khusus untuk keluarga dan anak-anak." },
 ];
 const GROOMERS = [
-  { name:"Adin Smith",   role:"Head Groomer",    color:"from-orange-400 to-orange-600", init:"AS" },
-  { name:"Morgan Jones", role:"Pet Trainer",     color:"from-amber-400  to-amber-600",  init:"MJ" },
-  { name:"Jane Harper",  role:"Veterinarian",    color:"from-teal-400   to-teal-600",   init:"JH" },
-  { name:"Lauren Obi",   role:"Care Specialist", color:"from-purple-400 to-purple-600", init:"LO" },
+  { name:"drh. Adi Santoso",  role:"Dokter Hewan Utama",   color:"from-orange-400 to-orange-600", init:"AS" },
+  { name:"Maya Putri",        role:"Groomer Senior",       color:"from-amber-400  to-amber-600",  init:"MP" },
+  { name:"Budi Raharjo",      role:"Pet Trainer",          color:"from-teal-400   to-teal-600",   init:"BR" },
+  { name:"Sari Dewi",         role:"Perawat Hewan",        color:"from-purple-400 to-purple-600", init:"SD" },
 ];
 const BLOGS = [
-  { tag:"Health",   title:"Cara Merawat Kucing Agar Tetap Sehat",        desc:"Tips menjaga kesehatan kucing kesayangan Anda setiap hari.", img:"/images/blog-dog.png" },
-  { tag:"Grooming", title:"Why You Should Groom Your Pet Regularly",     desc:"Grooming rutin penting untuk kesehatan kulit dan bulu hewan.", img:"/images/hero-cat.png" },
+  {
+    tag:"Kesehatan",
+    title:"Tips Menjaga Kesehatan Kucing di Rumah",
+    desc:"Panduan lengkap merawat kucing kesayangan agar selalu sehat, aktif, dan bahagia setiap hari.",
+    img:"/images/blog-dog.png",
+  },
+  {
+    tag:"Grooming",
+    title:"Kenapa Grooming Rutin Penting untuk Hewan Anda?",
+    desc:"Grooming bukan hanya soal penampilan — ini investasi kesehatan kulit dan bulu jangka panjang.",
+    img:"/images/hero-cat.png",
+  },
 ];
 const JOIN_PERKS = [
-  { icon:"📅", title:"Jadwal Mudah",      desc:"Buat dan pantau jadwal perawatan hewan kapan saja." },
-  { icon:"🐾", title:"Rekam Kesehatan",   desc:"Riwayat kesehatan hewan tersimpan aman dan mudah diakses." },
-  { icon:"🎁", title:"Promo Member",      desc:"Dapatkan diskon eksklusif dan penawaran spesial tiap bulan." },
-  { icon:"💬", title:"Konsultasi Online", desc:"Tanya dokter hewan kami langsung dari aplikasi." },
+  { icon:"📅", title:"Jadwal Fleksibel",    desc:"Buat dan kelola jadwal perawatan hewan Anda kapan saja dan di mana saja." },
+  { icon:"🐾", title:"Rekam Medis Digital", desc:"Riwayat kesehatan hewan tersimpan rapi dan bisa diakses sewaktu-waktu." },
+  { icon:"🎁", title:"Promo Anggota",       desc:"Nikmati diskon eksklusif dan penawaran spesial khusus anggota setiap bulan." },
+  { icon:"💬", title:"Konsultasi Online",   desc:"Tanya langsung ke dokter hewan kami tanpa perlu keluar rumah." },
 ];
 
 /* ── Sub-komponen ── */
@@ -62,14 +76,17 @@ export default function Landing() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
-            {[["#hero","Home"],["#services","Layanan"],["#team","Tim Kami"],["#blog","Blog"]].map(([h,l])=>(
+            {[["#hero","Beranda"],["#services","Layanan"],["#team","Tim Kami"],["#blog","Artikel"]].map(([h,l])=>(
               <a key={l} href={h} className="text-slate-600 hover:text-[#FF7A00] text-sm font-medium transition-colors">{l}</a>
             ))}
+            <Link to="/promo" className="text-[#FF7A00] hover:text-[#FF9F43] text-sm font-bold transition-colors flex items-center gap-1">
+              🎁 Promo
+            </Link>
           </nav>
 
           {/* Desktop CTA — arahkan ke halaman daftar UMUM, bukan login admin */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/register"
+            <Link to="/daftar"
               className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md hover:shadow-orange-500/25 active:scale-95">
               Daftar Sekarang
             </Link>
@@ -87,11 +104,15 @@ export default function Landing() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col gap-3">
-            {[["#hero","Home"],["#services","Layanan"],["#team","Tim Kami"],["#blog","Blog"]].map(([h,l])=>(
+            {[["#hero","Beranda"],["#services","Layanan"],["#team","Tim Kami"],["#blog","Artikel"]].map(([h,l])=>(
               <a key={l} href={h} onClick={()=>setMobileOpen(false)}
                 className="text-slate-600 hover:text-[#FF7A00] text-sm font-medium py-2 border-b border-slate-50">{l}</a>
             ))}
-            <Link to="/register" onClick={()=>setMobileOpen(false)}
+            <Link to="/promo" onClick={()=>setMobileOpen(false)}
+              className="text-[#FF7A00] font-bold text-sm py-2 flex items-center gap-1">
+              🎁 Promo & Benefit
+            </Link>
+            <Link to="/daftar" onClick={()=>setMobileOpen(false)}
               className="bg-[#FF7A00] text-white text-sm font-bold px-5 py-3 rounded-xl text-center mt-2 active:scale-95">
               Daftar Sekarang
             </Link>
@@ -106,20 +127,21 @@ export default function Landing() {
           {/* Kiri */}
           <div>
             <span className="inline-flex items-center gap-2 bg-orange-100 text-[#FF7A00] text-xs font-bold px-3 py-1.5 rounded-full mb-6">
-              🐾 Klinik Hewan Terpercaya sejak 2018
+              🐾 Klinik Hewan — Baru Hadir untuk Anda
             </span>
             <h1 className="text-4xl md:text-5xl font-black text-[#212153] leading-[1.15] mb-6">
-              We take care of<br />your pet and help{" "}
-              <span className="text-[#FF7A00]">them to grow 🧡</span>
+              Kami merawat hewan<br />kesayangan Anda dengan{" "}
+              <span className="text-[#FF7A00]">sepenuh hati 🧡</span>
             </h1>
             <p className="text-slate-500 text-base leading-relaxed mb-8 max-w-md">
-              Layanan lengkap untuk hewan peliharaan Anda — dari perawatan medis,
-              grooming premium, hingga penitipan hewan dengan fasilitas terbaik di Jakarta.
+              Klinik Mew hadir dengan layanan perawatan hewan yang lengkap, terjangkau,
+              dan ditangani oleh tenaga profesional berpengalaman. Kepercayaan Anda
+              adalah prioritas kami.
             </p>
             <div className="flex flex-wrap gap-3 mb-10">
               <a href="#services"
                 className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-6 py-3 rounded-xl shadow-md hover:shadow-orange-500/25 transition-all active:scale-95">
-                Lihat Layanan
+                Lihat Layanan Kami
               </a>
               <a href="#team"
                 className="bg-white border-2 border-slate-200 hover:border-[#FF7A00] text-[#212153] hover:text-[#FF7A00] font-bold px-6 py-3 rounded-xl transition-all">
@@ -129,33 +151,48 @@ export default function Landing() {
             {/* Social proof */}
             <div className="flex items-center gap-4">
               <div className="flex -space-x-2">
-                {["IP","GS","RP","CU"].map((init,i)=>(
+                {["BS","SA","RR","DL"].map((init,i)=>(
                   <div key={i} className="w-9 h-9 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-400 border-2 border-white flex items-center justify-center text-white text-xs font-bold">{init}</div>
                 ))}
               </div>
               <div>
-                <p className="text-sm font-bold text-[#212153]">2.500+ Happy Clients</p>
+                <p className="text-sm font-bold text-[#212153]">300+ Pelanggan Puas</p>
                 <div className="flex items-center gap-0.5 mt-0.5">
                   {"★★★★★".split("").map((_,i)=><span key={i} className="text-[#FF7A00] text-xs">★</span>)}
-                  <span className="text-xs text-slate-400 ml-1">5.0 Rating</span>
+                  <span className="text-xs text-slate-400 ml-1">5.0 Rating Awal</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Kanan — gambar hero */}
-          <div className="relative flex justify-center items-center">
-            <div className="w-72 h-72 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-orange-100 to-orange-200 overflow-hidden shadow-2xl">
-              <img src="/images/hero-dog.png" alt="Happy Pet" className="w-full h-full object-cover"
-                onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span class="text-8xl flex items-center justify-center h-full">🐕</span>';}}/>
+          <div className="relative flex justify-center items-center py-12 px-12">
+            {/* Lingkaran background biru muda */}
+            <div className="w-72 h-72 md:w-80 md:h-80 rounded-full bg-[#DDEEFF] overflow-hidden flex items-center justify-center">
+              <img src="/images/hero-dog.png" alt="Happy Pet"
+                className="w-full h-full object-cover object-top"
+                onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:6rem">🐕</span>';}}/>
             </div>
-            <div className="absolute -bottom-3 -left-2 md:-left-6 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-orange-100">
-              <div className="w-9 h-9 bg-green-100 rounded-xl flex items-center justify-center text-lg">✅</div>
-              <div><p className="text-xs font-bold text-[#212153]">Dipercaya Keluarga</p><p className="text-xs text-slate-400">since 2018</p></div>
+
+            {/* Floating card kiri bawah — Dipercaya Keluarga */}
+            <div className="absolute bottom-4 left-0 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-slate-50">
+              <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white font-black text-base shrink-0">✓</div>
+              <div>
+                <p className="text-sm font-black text-[#212153]">Tenaga Profesional</p>
+                <p className="text-xs text-slate-400 mt-0.5">Dokter & groomer bersertifikat</p>
+              </div>
             </div>
-            <div className="absolute -top-3 -right-2 md:-right-4 bg-white rounded-2xl shadow-xl px-4 py-3 border border-orange-100 text-center">
-              <p className="text-xl font-black text-[#FF7A00]">4.9 ★</p>
-              <p className="text-xs text-slate-400">1.850+ ulasan</p>
+
+            {/* Floating card kanan atas — Rating */}
+            <div className="absolute top-4 right-0 bg-white rounded-2xl shadow-xl px-5 py-3 text-center border border-slate-50">
+              <p className="text-2xl font-black text-[#FF7A00] leading-none">5.0 ★</p>
+              <p className="text-xs text-slate-400 mt-1">300+ ulasan awal</p>
+            </div>
+
+            {/* Floating chip kanan tengah */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 bg-[#FF7A00] text-white rounded-2xl shadow-xl px-4 py-2.5 flex items-center gap-2">
+              <span className="text-base">🐾</span>
+              <p className="text-xs font-bold whitespace-nowrap">500+ Hewan<br/>Dirawat</p>
             </div>
           </div>
         </div>
@@ -178,37 +215,53 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div>
             <SectionLabel>📞 Hubungi Kami</SectionLabel>
-            <SectionTitle>Let's book a call<br/>and stay connected</SectionTitle>
+            <SectionTitle>Yuk, buat janji temu<br/>dan tetap terhubung</SectionTitle>
             <div className="mt-6 space-y-2 mb-6">
-              {["Konsultasi gratis untuk kunjungan pertama","Dokter hewan berpengalaman & bersertifikat","Layanan darurat 24/7"].map(t=>(
+              {["Konsultasi gratis untuk kunjungan pertama","Dokter hewan berpengalaman & bersertifikat","Layanan darurat tersedia setiap saat"].map(t=>(
                 <div key={t} className="flex items-center gap-2 text-sm text-slate-600">
                   <span className="w-5 h-5 bg-orange-100 text-[#FF7A00] rounded-full flex items-center justify-center text-xs font-bold shrink-0">✓</span>{t}
                 </div>
               ))}
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-md">
-              Kami siap membantu hewan peliharaan Anda mendapatkan perawatan terbaik.
-              Hubungi kami sekarang dan konsultasi gratis dengan dokter kami.
+              Tim kami siap membantu hewan kesayangan Anda mendapatkan perawatan terbaik.
+              Hubungi kami sekarang — konsultasi pertama gratis!
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="tel:+6281234567890"
                 className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center gap-2 text-sm">
-                📞 Book Appointment
+                📞 Buat Janji Sekarang
               </a>
               <a href="https://wa.me/6281234567890" target="_blank" rel="noreferrer"
                 className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center gap-2 text-sm">
-                💬 WhatsApp
+                💬 Chat via WhatsApp
               </a>
             </div>
           </div>
-          <div className="relative flex justify-center">
-            <div className="w-64 h-64 md:w-72 md:h-72 rounded-full bg-orange-50 overflow-hidden flex items-center justify-center shadow-xl">
-              <img src="/images/veterinarian-pet.PNG" alt="Dokter Hewan" className="w-full h-full object-cover"
-                onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span class="text-7xl">👩‍⚕️</span>';}}/>
+          <div className="relative flex justify-center items-center py-12 px-12">
+            {/* Lingkaran background putih/abu muda */}
+            <div className="w-64 h-64 md:w-72 md:h-72 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center">
+              <img src="/images/veterinarian-pet.PNG" alt="Dokter Hewan"
+                className="w-full h-full object-cover object-top"
+                onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:5rem">👩‍⚕️</span>';}}/>
             </div>
-            <div className="absolute top-4 -right-2 md:-right-4 bg-white rounded-2xl shadow-xl p-4 border border-orange-100">
-              <p className="text-xs font-bold text-[#212153]">🩺 24/7 Emergency</p>
-              <p className="text-xs text-slate-400 mt-0.5">Selalu siap untuk hewan Anda</p>
+
+            {/* Floating card kanan atas — 24/7 Emergency */}
+            <div className="absolute top-4 right-0 bg-white rounded-2xl shadow-xl px-5 py-3.5 border border-slate-50">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-base">🩺</span>
+                <p className="text-sm font-black text-[#212153]">Darurat Kapan Saja</p>
+              </div>
+              <p className="text-xs text-slate-400 leading-relaxed">Kami selalu siap untuk hewan Anda</p>
+            </div>
+
+            {/* Floating chip kiri bawah */}
+            <div className="absolute bottom-4 left-0 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-slate-50">
+              <div className="w-9 h-9 bg-orange-100 rounded-xl flex items-center justify-center text-lg shrink-0">📅</div>
+              <div>
+                <p className="text-xs font-black text-[#212153]">Jadwal Fleksibel</p>
+                <p className="text-xs text-slate-400 mt-0.5">Buat janji dalam 1 menit</p>
+              </div>
             </div>
           </div>
         </div>
@@ -219,20 +272,19 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <SectionLabel>✨ Yang Kami Tawarkan</SectionLabel>
-            <SectionTitle>Our Services</SectionTitle>
+            <SectionTitle>Layanan Kami</SectionTitle>
             <p className="text-slate-500 mt-3 max-w-md mx-auto text-sm">
-              Layanan lengkap untuk memastikan hewan peliharaan Anda selalu sehat, bahagia, dan terawat.
+              Semua kebutuhan perawatan hewan tersedia di satu tempat — mudah, terjangkau, dan profesional.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {SERVICES.map((s,i)=>(
-              <div key={i} className={`rounded-3xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg cursor-default
-                ${i===0?"bg-[#FF7A00] text-white shadow-lg shadow-orange-400/30":"bg-white shadow-sm"}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 ${i===0?"bg-white/20":"bg-orange-50"}`}>
+              <div key={i} className="group rounded-3xl p-6 bg-white shadow-sm hover:bg-[#FF7A00] hover:shadow-xl hover:shadow-orange-400/30 hover:-translate-y-1 transition-all duration-300 cursor-default">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 bg-orange-50 group-hover:bg-white/20 transition-colors duration-300">
                   {s.icon}
                 </div>
-                <h3 className={`font-extrabold text-base mb-2 ${i===0?"text-white":"text-[#212153]"}`}>{s.title}</h3>
-                <p className={`text-sm leading-relaxed ${i===0?"text-orange-100":"text-slate-500"}`}>{s.desc}</p>
+                <h3 className="font-extrabold text-base mb-2 text-[#212153] group-hover:text-white transition-colors duration-300">{s.title}</h3>
+                <p className="text-sm leading-relaxed text-slate-500 group-hover:text-orange-100 transition-colors duration-300">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -244,9 +296,9 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div>
             <SectionLabel>🏥 Fasilitas Kami</SectionLabel>
-            <SectionTitle>Facilities We Provides</SectionTitle>
+            <SectionTitle>Fasilitas yang Kami Sediakan</SectionTitle>
             <p className="text-slate-500 text-sm leading-relaxed mt-4 mb-8 max-w-md">
-              Klinik kami dilengkapi fasilitas modern untuk memberikan pelayanan terbaik.
+              Klinik Mew dilengkapi fasilitas modern dan nyaman agar hewan Anda selalu mendapat perawatan terbaik.
             </p>
             <div className="grid grid-cols-2 gap-x-8 gap-y-6">
               {FACILITIES.map((f,i)=>(
@@ -261,14 +313,19 @@ export default function Landing() {
             </div>
           </div>
           <div className="flex justify-center">
-            <div className="relative">
-              <div className="w-60 h-60 md:w-72 md:h-72 rounded-full bg-orange-100 overflow-hidden flex items-center justify-center mx-auto shadow-xl">
-                <img src="/images/dog-standing.png" alt="Dog" className="w-full h-full object-contain"
-                  onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span class="text-8xl">🐕</span>';}}/>
+            {/* Wrapper dengan padding supaya card tidak terpotong */}
+            <div className="relative pb-8 pr-8">
+              {/* Lingkaran background krem/peach */}
+              <div className="w-60 h-60 md:w-72 md:h-72 rounded-full bg-orange-100 overflow-hidden flex items-center justify-center shadow-sm">
+                <img src="/images/dog-standing.png" alt="Dog"
+                  className="w-full h-full object-contain scale-110"
+                  onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:5rem">🐕</span>';}}/>
               </div>
-              <div className="absolute -bottom-4 right-0 md:-right-4 bg-[#FF7A00] text-white rounded-2xl px-5 py-3 shadow-xl text-center">
-                <p className="font-black text-xl">1300+</p>
-                <p className="text-xs text-orange-100">Treatments Done</p>
+
+              {/* Floating badge "1300+" — pojok kanan bawah keluar dari lingkaran */}
+              <div className="absolute bottom-0 right-0 bg-[#FF7A00] text-white rounded-2xl px-6 py-4 shadow-2xl shadow-orange-400/40 text-center">
+                <p className="font-black text-2xl leading-none">50+</p>
+                <p className="text-xs text-orange-100 mt-1 font-medium">Perawatan/Bulan</p>
               </div>
             </div>
           </div>
@@ -280,9 +337,9 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <SectionLabel>👨‍⚕️ Tim Profesional</SectionLabel>
-            <SectionTitle>Our Groomers</SectionTitle>
+            <SectionTitle>Tim Perawat Kami</SectionTitle>
             <p className="text-slate-500 mt-3 max-w-sm mx-auto text-sm">
-              Tim berpengalaman kami siap memberikan perawatan terbaik untuk hewan Anda.
+              Kenali tim kami yang berpengalaman dan berdedikasi tinggi untuk hewan kesayangan Anda.
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -304,7 +361,7 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <SectionLabel>📰 Artikel Terbaru</SectionLabel>
-            <SectionTitle>MEW Blog</SectionTitle>
+            <SectionTitle>Blog Mew</SectionTitle>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             {BLOGS.map((b,i)=>(
@@ -317,7 +374,7 @@ export default function Landing() {
                   <span className="bg-orange-50 text-[#FF7A00] text-xs font-bold px-3 py-1 rounded-full border border-orange-100">{b.tag}</span>
                   <h3 className="font-extrabold text-[#212153] text-base mt-3 mb-2">{b.title}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed mb-4">{b.desc}</p>
-                  <button className="text-[#FF7A00] font-bold text-sm hover:underline flex items-center gap-1">Read More <span>→</span></button>
+                  <button className="text-[#FF7A00] font-bold text-sm hover:underline flex items-center gap-1">Baca Selengkapnya <span>→</span></button>
                 </div>
               </div>
             ))}
@@ -355,31 +412,38 @@ export default function Landing() {
             ))}
           </div>
 
+          {/* Link ke halaman promo */}
+          <div className="text-center mb-8">
+            <Link to="/daftar"
+              className="inline-flex items-center gap-2 bg-white border-2 border-[#FF7A00] text-[#FF7A00] hover:bg-[#FF7A00] hover:text-white font-bold px-6 py-3 rounded-xl transition-all text-sm">
+              🎁 Lihat Semua Promo & Benefit Member
+            </Link>
+          </div>
+
           {/* CTA card */}
           <div className="bg-gradient-to-br from-[#212153] to-indigo-800 rounded-3xl p-10 text-center shadow-2xl">
             <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
               Siap Bergabung Bersama Kami?
             </h3>
             <p className="text-indigo-200 text-sm mb-8 max-w-md mx-auto">
-              Daftarkan diri Anda sekarang — gratis! Tidak perlu kartu kredit.
-              Mulai perjalanan merawat hewan kesayangan bersama Mew.
+              Daftarkan diri Anda sekarang — gratis, mudah, dan tanpa syarat apapun.
+              Mulai perjalanan merawat hewan kesayangan bersama komunitas Mew.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/register"
+              <Link to="/daftar"
                 className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95 text-base flex items-center gap-2">
-                🐾 Bergabung Sekarang — Gratis!
+                🐾 Daftar Gratis Sekarang
               </Link>
-              <Link to="/login"
+              <Link to="/masuk"
                 className="text-indigo-200 hover:text-white font-semibold text-sm transition-colors flex items-center gap-1">
                 Sudah punya akun? Masuk di sini →
               </Link>
             </div>
             <p className="text-indigo-400 text-xs mt-6">
-              Dengan mendaftar, kamu menyetujui syarat & ketentuan Mew Pet Clinic.
+              Dengan mendaftar, kamu menyetujui syarat & ketentuan Klinik Mew.
             </p>
           </div>
 
-          {/* Admin hint — tersembunyi, teks kecil di bawah */}
           <p className="text-center text-slate-400 text-xs mt-8">
             Admin klinik?{" "}
             <Link to="/login" className="text-slate-500 hover:text-[#FF7A00] font-semibold underline transition-colors">
@@ -397,7 +461,8 @@ export default function Landing() {
           <div>
             <span className="text-2xl font-black">MEW<span className="text-[#FF7A00]">.</span></span>
             <p className="text-indigo-300 text-sm mt-4 leading-relaxed">
-              Klinik hewan terpercaya dengan layanan profesional untuk hewan kesayangan Anda sejak 2018.
+              Klinik hewan yang hadir dengan semangat memberikan perawatan terbaik
+              dan terjangkau untuk hewan peliharaan Anda.
             </p>
             <div className="flex gap-3 mt-5">
               {["📘","📸","🐦","▶️"].map((icon,i)=>(
@@ -410,9 +475,9 @@ export default function Landing() {
           </div>
 
           {[
-            { title:"Useful Links", links:["Home","Layanan","Tim Kami","Blog","Bergabung"] },
-            { title:"Services",     links:["Veterinary Care","Pet Grooming","Pet Hotel","Vaccination"] },
-            { title:"Contact Info", links:["📍 Jl. Mew No.1, Jakarta","📞 0812-3456-7890","✉️ hello@mew.id","🕗 Sen–Sab 08:00–20:00"] },
+            { title:"Tautan Cepat", links:["Beranda","Layanan Kami","Tim Perawat","Artikel","Bergabung"] },
+            { title:"Layanan",      links:["Perawatan Medis","Grooming Premium","Penitipan Hewan","Vaksinasi"] },
+            { title:"Kontak Kami",  links:["📍 Jl. Mew No.1, Jakarta","📞 0812-3456-7890","✉️ hello@mew.id","🕗 Sen–Sab 08:00–20:00"] },
           ].map(col=>(
             <div key={col.title}>
               <h4 className="font-extrabold text-white mb-5 text-xs uppercase tracking-widest">{col.title}</h4>
@@ -426,8 +491,8 @@ export default function Landing() {
         </div>
 
         <div className="max-w-6xl mx-auto px-6 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-indigo-400 text-xs">© 2026 Mew Pet Clinic. All rights reserved.</p>
-          <p className="text-indigo-400 text-xs">Made with 🧡 for pets everywhere.</p>
+          <p className="text-indigo-400 text-xs">© 2026 Klinik Mew. Hak cipta dilindungi.</p>
+          <p className="text-indigo-400 text-xs">Dibuat dengan 🧡 untuk hewan peliharaan di mana saja.</p>
         </div>
       </footer>
 

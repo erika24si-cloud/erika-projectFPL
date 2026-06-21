@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabase";
 import { InputField } from "../../../components/project/InputField";
+import { PasswordInput } from "../../../components/project/PasswordInput";
 import { Button } from "../../../components/project/Button";
 import { Toast } from "../../../components/project/Toast";
 
@@ -55,7 +56,7 @@ export default function Login() {
   return (
     <div className="flex flex-col">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-black text-[#212153] mb-2">Welcome Back! 🐾</h2>
+        <h2 className="text-3xl font-black text-[#212153] mb-2">Selamat Datang! 🐾</h2>
         <p className="text-gray-500 text-sm">Masuk ke akun klinik Mew kamu.</p>
       </div>
 
@@ -83,12 +84,10 @@ export default function Login() {
           <label className="text-sm font-bold text-[#212153] ml-1">
             Password <span className="text-rose-500">*</span>
           </label>
-          <InputField
-            type="password"
+          <PasswordInput
             placeholder="Masukkan password kamu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full"
           />
           {errors.password && (
             <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.password}</span>

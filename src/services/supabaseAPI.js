@@ -51,3 +51,24 @@ export const customersAPI = {
     return response.data;
   },
 };
+
+// ── TABEL: members (akun member/pelanggan umum) ──────────────────────────────
+
+export const membersAPI = {
+  async fetchMembers() {
+    const response = await axios.get(`${API_URL}/members`, { headers });
+    return response.data;
+  },
+  async getMemberById(id) {
+    const response = await axios.get(`${API_URL}/members?id=eq.${id}`, { headers });
+    return response.data[0] ?? null;
+  },
+  async updateMember(id, data) {
+    const response = await axios.patch(`${API_URL}/members?id=eq.${id}`, data, { headers });
+    return response.data;
+  },
+  async deleteMember(id) {
+    const response = await axios.delete(`${API_URL}/members?id=eq.${id}`, { headers });
+    return response.data;
+  },
+};

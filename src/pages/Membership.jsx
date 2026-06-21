@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../components/project/Button";
 import { PageHeader } from "../components/project/PageHeader";
 import { StatCard } from "../components/project/StatCard";
 import { SearchBar } from "../components/project/SearchBar";
 import { InputField } from "../components/project/InputField";
 import { Toast } from "../components/project/Toast";
+import { useMembershipTiers } from "../hooks/useMembershipTiers";
+import { membershipAPI } from "../services/membershipAPI";
 
 // ── IMPORT SHADCN UI DIALOG COMPONENTS ──
 import {
@@ -15,35 +17,11 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-const INITIAL_MEMBERS = [
-  {
-    id: 1,
-    level: "Silver",
-    range: "Rp 0 - Rp 999.999",
-    members: 420,
-    benefits: ["Diskon Grooming 5%", "Reminder Vaksin"],
-    status: "Aktif"
-  },
-  {
-    id: 2,
-    level: "Gold",
-    range: "Rp 1.000.000 - Rp 4.999.999",
-    members: 250,
-    benefits: ["Diskon Grooming 10%", "Prioritas Reservasi", "Reminder Vaksin"],
-    status: "Aktif"
-  },
-  {
-    id: 3,
-    level: "Platinum",
-    range: "> Rp 5.000.000",
-    members: 130,
-    benefits: ["Diskon Grooming 15%", "Prioritas Reservasi", "Gratis Konsultasi Dasar", "Reminder Vaksin"],
-    status: "Aktif"
-  }
-];
 
 export default function Membership() {
-  const [memberships, setMemberships] = useState(INITIAL_MEMBERS);
+  // ── Ambil data dari Supabase via hook (sumber tunggal) ──
+  const { tiers: memberships, setTiers: setMemberships } = useMembershipTiers();
+
   const [search, setSearch] = useState("");
   const [toast, setToast] = useState({ visible: false, message: "", type: "success" });
 
@@ -76,23 +54,36 @@ export default function Membership() {
     setOpenEditModal(true);
   };
 
-  const handleSaveEdit = (e) => {
+  const handleSaveEdit = async (e) => {
     e.preventDefault();
     if (!selectedTier) return;
 
+    const updatedBenefits = editForm.benefitsText
+      .split(",")
+      .map((b) => b.trim())
+      .filter((b) => b !== "");
+
+    // Optimistic update di UI
     setMemberships((prev) =>
       prev.map((item) =>
         item.id === selectedTier.id
-          ? {
-              ...item,
-              range: editForm.range,
-              benefits: editForm.benefitsText.split(",").map((b) => b.trim()).filter((b) => b !== "")
-            }
+          ? { ...item, range: editForm.range, benefits: updatedBenefits }
           : item
       )
     );
+
+    // Simpan ke Supabase → otomatis terbaca oleh guest & member
+    try {
+      await membershipAPI.updateTier(selectedTier.id, {
+        range:    editForm.range,
+        benefits: updatedBenefits,
+      });
+      showToast(`Tier ${selectedTier.level} berhasil diperbarui dan tersinkron!`, "success");
+    } catch {
+      showToast(`Disimpan lokal — sinkronisasi Supabase gagal.`, "warning");
+    }
+
     setOpenEditModal(false);
-    showToast(`Kebijakan benefit tier ${selectedTier.level} berhasil diperbarui!`, "success");
   };
 
   const handleSaveUpgrade = (e) => {
