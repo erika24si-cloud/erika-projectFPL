@@ -29,7 +29,7 @@ alter table public.profiles disable row level security;
 create table public.members (
   id         uuid primary key references auth.users(id) on delete cascade,
   full_name  text,
-  email      text,![alt text](image.png)
+  email      text,
   tier       text default 'Silver',
   phone      text,
   created_at timestamptz default now()
