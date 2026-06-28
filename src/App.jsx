@@ -28,11 +28,9 @@ export default function App() {
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
 
-        {/* ── Landing Page (publik) ── */}
         <Route path="/" element={<Landing />} />
         <Route path="/promo" element={<Promo />} />
 
-        {/* ── Area Member (login wajib, halaman profil umum) ── */}
         <Route path="/member" element={
           <ProtectedRoute><MemberLayout /></ProtectedRoute>
         }>
@@ -42,7 +40,6 @@ export default function App() {
           <Route path="kunjungan"  element={<MemberKunjungan />} />
         </Route>
 
-        {/* ── Dashboard Admin (login wajib) ── */}
         <Route path="/dashboard" element={
           <ProtectedRoute><MainLayout /></ProtectedRoute>
         }>
@@ -54,13 +51,11 @@ export default function App() {
           <Route path="membership"   element={<Membership />} />
         </Route>
 
-        {/* ── Autentikasi ADMIN ── */}
         <Route element={<AuthLayout />}>
           <Route path="/login"    element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
 
-        {/* ── Autentikasi MEMBER (halaman terpisah) ── */}
         <Route element={<AuthLayout />}>
           <Route path="/masuk"  element={<MemberLogin />} />
           <Route path="/daftar" element={<MemberRegister />} />
