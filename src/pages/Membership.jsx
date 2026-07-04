@@ -102,26 +102,26 @@ export default function Membership() {
   return (
     <div className="w-full">
       <PageHeader
-        title="Membership & Loyalty Program"
-        subtitle="Kelola program loyalitas pelanggan klinik."
+        title="Keanggotaan & Program Loyalitas"
+        subtitle="Kelola program loyalitas dan tingkatan keanggotaan pelanggan."
         action={
           <Button variant="primary" onClick={() => setOpenUpgradeModal(true)}>
-            + Upgrade Membership
+            + Naik Tingkat Member
           </Button>
         }
       />
 
       {/* Ringkasan Dashboard Stat Card */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-6">
-        <StatCard title="Total Member" value="800" icon="👥" color="blue" />
-        <StatCard title="Member Aktif" value="675" icon="⭐" color="orange" />
+        <StatCard title="Total Anggota"  value="800" icon="👥" color="blue" />
+        <StatCard title="Anggota Aktif"  value="675" icon="⭐" color="orange" />
         <StatCard title="Reward Ditukar" value="248" icon="🎁" color="green" />
       </div>
 
       {/* Kolom Filter Pencarian */}
       <div className="mb-6">
         <SearchBar
-          placeholder="Cari level membership..."
+          placeholder="Cari tingkatan keanggotaan..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full md:w-80"
@@ -154,17 +154,17 @@ export default function Membership() {
               </div>
 
               <h3 className="text-2xl font-black text-[#212153] mb-2">
-                {item.level} Member
+                {item.level} Anggota
               </h3>
 
               <p className="text-xs text-gray-400 font-medium mb-4 leading-relaxed">
-                Parameter Akumulasi Transaksi:
+                Akumulasi Transaksi:
                 <br />
                 <strong className="text-gray-600 font-bold">{item.range}</strong>
               </p>
 
               <div className="mb-5">
-                <p className="font-bold text-sm text-[#212153] mb-2">Hak Istimewa & Benefit:</p>
+                <p className="font-bold text-sm text-[#212153] mb-2">Keuntungan & Manfaat:</p>
                 <ul className="text-sm text-gray-500 space-y-1.5 font-medium">
                   {item.benefits.map((benefit, idx) => (
                     <li key={idx} className="flex items-center gap-1.5">
@@ -177,8 +177,8 @@ export default function Membership() {
 
             <div>
               <div className="mb-6 pt-4 border-t border-gray-50">
-                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Jumlah Integrasi Akun</span>
-                <div className="text-3xl font-black text-[#212153] mt-0.5">{item.members} <span className="text-sm font-semibold text-gray-400">User</span></div>
+                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Jumlah Pengguna</span>
+                <div className="text-3xl font-black text-[#212153] mt-0.5">{item.members} <span className="text-sm font-semibold text-gray-400">Pengguna</span></div>
               </div>
 
               <div className="flex gap-3">
@@ -186,13 +186,13 @@ export default function Membership() {
                   onClick={() => handleOpenDetail(item)}
                   className="flex-1 bg-white border border-gray-200 hover:border-[#212153] text-[#212153] py-2.5 rounded-xl text-xs font-bold transition-colors"
                 >
-                  Detail
+                  Lihat Detail
                 </button>
                 <button
                   onClick={() => handleOpenEdit(item)}
                   className="flex-1 bg-[#212153] hover:bg-[#212153]/90 text-white py-2.5 rounded-xl text-xs font-bold transition-colors"
                 >
-                  Edit Benefit
+                  Edit Manfaat
                 </button>
               </div>
             </div>
@@ -204,7 +204,7 @@ export default function Membership() {
       <Dialog open={openUpgradeModal} onOpenChange={openUpgradeModal ? () => setOpenUpgradeModal(false) : undefined}>
         <DialogContent className="bg-white rounded-3xl p-6 sm:max-w-[420px]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-extrabold text-[#212153]">Simulasi Manual Upgrade Tier</DialogTitle>
+            <DialogTitle className="text-xl font-extrabold text-[#212153]">Naik Tingkat Anggota (Manual)</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSaveUpgrade} className="flex flex-col gap-4 my-2">
             <InputField
@@ -221,9 +221,9 @@ export default function Membership() {
                 value={upgradeForm.targetTier}
                 onChange={(e) => setUpgradeForm({ ...upgradeForm, targetTier: e.target.value })}
               >
-                <option value="Silver">Silver Member</option>
-                <option value="Gold">Gold Member</option>
-                <option value="Platinum">Platinum Member</option>
+                <option value="Silver">Anggota Silver</option>
+                <option value="Gold">Anggota Gold</option>
+                <option value="Platinum">Anggota Platinum</option>
               </select>
             </div>
           </form>
@@ -238,16 +238,16 @@ export default function Membership() {
       <Dialog open={openDetailModal} onOpenChange={openDetailModal ? () => setOpenDetailModal(false) : undefined}>
         <DialogContent className="bg-white rounded-3xl p-6 sm:max-w-[400px]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-extrabold text-[#212153]">Ringkasan Hak Istimewa Tier</DialogTitle>
+            <DialogTitle className="text-xl font-extrabold text-[#212153]">Detail Manfaat Tingkatan</DialogTitle>
           </DialogHeader>
           {selectedTier && (
             <div className="my-3 flex flex-col gap-4">
               <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                <span className="text-xs font-bold text-gray-400 block mb-1">TINGKATAN LEVEL</span>
-                <span className="text-lg font-extrabold text-[#FF7A00]">{selectedTier.level} Keanggotaan</span>
+                <span className="text-xs font-bold text-gray-400 block mb-1">TINGKATAN ANGGOTA</span>
+                <span className="text-lg font-extrabold text-[#FF7A00]">{selectedTier.level} Anggota</span>
               </div>
               <div>
-                <span className="text-xs font-bold text-gray-400 block mb-1">DAFTAR ADVANTAGE SYSTEM:</span>
+                <span className="text-xs font-bold text-gray-400 block mb-1">DAFTAR MANFAAT:</span>
                 <div className="flex flex-col gap-2 mt-1">
                   {selectedTier.benefits.map((benefit, i) => (
                     <div key={i} className="text-sm font-bold text-[#212153] bg-white border border-gray-100 px-3 py-2 rounded-xl flex items-center gap-2">

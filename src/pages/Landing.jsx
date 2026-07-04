@@ -1,30 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-/* ── Data ── */
 const STATS    = [
   { v:"500+",  l:"Hewan Dirawat"    },
   { v:"300+",  l:"Pelanggan Aktif"  },
   { v:"50+",   l:"Perawatan/Bulan"  },
 ];
 const SERVICES = [
-  { icon:"🩺", title:"Perawatan Medis",      desc:"Pemeriksaan kesehatan umum, diagnosis penyakit, dan pengobatan oleh dokter hewan berpengalaman." },
-  { icon:"✂️", title:"Grooming Premium",     desc:"Mandi bersih, potong kuku, bersihkan telinga, dan perapian bulu untuk hewan kesayangan Anda." },
-  { icon:"🏨", title:"Penitipan Hewan",      desc:"Titipkan hewan Anda dengan aman — fasilitas nyaman, bersih, dan dipantau sepanjang hari." },
-  { icon:"💉", title:"Vaksinasi",            desc:"Program vaksin lengkap dan terjadwal sesuai jenis dan usia hewan peliharaan Anda." },
+  { icon:"🩺", title:"Perawatan Medis",   desc:"Pemeriksaan kesehatan umum, diagnosis penyakit, dan pengobatan oleh dokter hewan berpengalaman." },
+  { icon:"✂️", title:"Grooming Premium",  desc:"Mandi bersih, potong kuku, bersihkan telinga, dan perapian bulu untuk hewan kesayangan Anda." },
+  { icon:"🏨", title:"Penitipan Hewan",   desc:"Titipkan hewan Anda dengan aman — fasilitas nyaman, bersih, dan dipantau sepanjang hari." },
+  { icon:"💉", title:"Vaksinasi",         desc:"Program vaksin lengkap dan terjadwal sesuai jenis dan usia hewan peliharaan Anda." },
 ];
 const FACILITIES = [
-  { icon:"✂️", title:"Grooming Profesional", desc:"Peralatan grooming modern dan aman untuk semua jenis hewan." },
-  { icon:"🐕", title:"Area Latihan",         desc:"Ruang latihan luas dengan trainer bersertifikat dan berpengalaman." },
-  { icon:"❤️", title:"Cek Kesehatan Rutin",  desc:"Pemeriksaan berkala dengan alat diagnostik lengkap dan modern." },
-  { icon:"🌿", title:"Perawatan Alami",      desc:"Menggunakan bahan-bahan alami yang aman dan ramah lingkungan." },
-  { icon:"💊", title:"Program Vaksinasi",    desc:"Jadwal vaksin teratur sesuai usia dan kebutuhan hewan Anda." },
-  { icon:"🐾", title:"Pelatihan Keluarga",   desc:"Program pelatihan hewan khusus untuk keluarga dan anak-anak." },
+  { icon:"✂️", title:"Grooming Profesional",  desc:"Peralatan grooming modern dan aman untuk semua jenis hewan." },
+  { icon:"🐕", title:"Area Latihan",           desc:"Ruang latihan luas dengan pelatih bersertifikat dan berpengalaman." },
+  { icon:"❤️", title:"Pemeriksaan Rutin",      desc:"Pemeriksaan berkala dengan alat diagnostik lengkap dan modern." },
+  { icon:"🌿", title:"Perawatan Alami",        desc:"Menggunakan bahan-bahan alami yang aman dan ramah lingkungan." },
+  { icon:"💊", title:"Program Vaksinasi",      desc:"Jadwal vaksin teratur sesuai usia dan kebutuhan hewan Anda." },
+  { icon:"🐾", title:"Pelatihan Keluarga",     desc:"Program pelatihan hewan khusus untuk keluarga dan anak-anak." },
 ];
 const GROOMERS = [
   { name:"drh. Adi Santoso",  role:"Dokter Hewan Utama",   color:"from-orange-400 to-orange-600", init:"AS" },
   { name:"Maya Putri",        role:"Groomer Senior",       color:"from-amber-400  to-amber-600",  init:"MP" },
-  { name:"Budi Raharjo",      role:"Pet Trainer",          color:"from-teal-400   to-teal-600",   init:"BR" },
+  { name:"Budi Raharjo",      role:"Pelatih Hewan",        color:"from-teal-400   to-teal-600",   init:"BR" },
   { name:"Sari Dewi",         role:"Perawat Hewan",        color:"from-purple-400 to-purple-600", init:"SD" },
 ];
 const BLOGS = [
@@ -45,10 +44,9 @@ const JOIN_PERKS = [
   { icon:"📅", title:"Jadwal Fleksibel",    desc:"Buat dan kelola jadwal perawatan hewan Anda kapan saja dan di mana saja." },
   { icon:"🐾", title:"Rekam Medis Digital", desc:"Riwayat kesehatan hewan tersimpan rapi dan bisa diakses sewaktu-waktu." },
   { icon:"🎁", title:"Promo Anggota",       desc:"Nikmati diskon eksklusif dan penawaran spesial khusus anggota setiap bulan." },
-  { icon:"💬", title:"Konsultasi Online",   desc:"Tanya langsung ke dokter hewan kami tanpa perlu keluar rumah." },
+  { icon:"💬", title:"Konsultasi Daring",   desc:"Tanya langsung ke dokter hewan kami tanpa perlu keluar rumah." },
 ];
 
-/* ── Sub-komponen ── */
 function SectionLabel({ children }) {
   return <p className="text-[#FF7A00] text-sm font-bold mb-2">{children}</p>;
 }
@@ -56,25 +54,19 @@ function SectionTitle({ children, light }) {
   return <h2 className={`text-3xl font-black leading-tight ${light ? "text-white" : "text-[#212153]"}`}>{children}</h2>;
 }
 
-/* ════════════════════════════════════════════
-   LANDING PAGE
-════════════════════════════════════════════ */
 export default function Landing() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── NAVBAR ── */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
 
-          {/* Logo */}
           <span className="text-2xl font-black text-[#212153] shrink-0">
             MEW<span className="text-[#FF7A00]">.</span>
           </span>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
             {[["#hero","Beranda"],["#services","Layanan"],["#team","Tim Kami"],["#blog","Artikel"]].map(([h,l])=>(
               <a key={l} href={h} className="text-slate-600 hover:text-[#FF7A00] text-sm font-medium transition-colors">{l}</a>
@@ -84,7 +76,6 @@ export default function Landing() {
             </Link>
           </nav>
 
-          {/* Desktop CTA — arahkan ke halaman daftar UMUM, bukan login admin */}
           <div className="hidden md:flex items-center gap-3">
             <Link to="/daftar"
               className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md hover:shadow-orange-500/25 active:scale-95">
@@ -92,7 +83,6 @@ export default function Landing() {
             </Link>
           </div>
 
-          {/* Hamburger mobile */}
           <button className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)} aria-label="menu">
             <div className="w-5 h-0.5 bg-slate-600 mb-1"/>
@@ -101,7 +91,6 @@ export default function Landing() {
           </button>
         </div>
 
-        {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col gap-3">
             {[["#hero","Beranda"],["#services","Layanan"],["#team","Tim Kami"],["#blog","Artikel"]].map(([h,l])=>(
@@ -120,11 +109,9 @@ export default function Landing() {
         )}
       </header>
 
-      {/* ── HERO ── */}
       <section id="hero" className="bg-[#FEF6EE] overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
 
-          {/* Kiri */}
           <div>
             <span className="inline-flex items-center gap-2 bg-orange-100 text-[#FF7A00] text-xs font-bold px-3 py-1.5 rounded-full mb-6">
               🐾 Klinik Hewan — Baru Hadir untuk Anda
@@ -148,7 +135,6 @@ export default function Landing() {
                 Kenali Tim Kami
               </a>
             </div>
-            {/* Social proof */}
             <div className="flex items-center gap-4">
               <div className="flex -space-x-2">
                 {["BS","SA","RR","DL"].map((init,i)=>(
@@ -165,16 +151,13 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Kanan — gambar hero */}
           <div className="relative flex justify-center items-center py-12 px-12">
-            {/* Lingkaran background biru muda */}
             <div className="w-72 h-72 md:w-80 md:h-80 rounded-full bg-[#DDEEFF] overflow-hidden flex items-center justify-center">
               <img src="/images/hero-dog.png" alt="Happy Pet"
                 className="w-full h-full object-cover object-top"
                 onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:6rem">🐕</span>';}}/>
             </div>
 
-            {/* Floating card kiri bawah — Dipercaya Keluarga */}
             <div className="absolute bottom-4 left-0 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-slate-50">
               <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white font-black text-base shrink-0">✓</div>
               <div>
@@ -183,13 +166,11 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Floating card kanan atas — Rating */}
             <div className="absolute top-4 right-0 bg-white rounded-2xl shadow-xl px-5 py-3 text-center border border-slate-50">
               <p className="text-2xl font-black text-[#FF7A00] leading-none">5.0 ★</p>
               <p className="text-xs text-slate-400 mt-1">300+ ulasan awal</p>
             </div>
 
-            {/* Floating chip kanan tengah */}
             <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 bg-[#FF7A00] text-white rounded-2xl shadow-xl px-4 py-2.5 flex items-center gap-2">
               <span className="text-base">🐾</span>
               <p className="text-xs font-bold whitespace-nowrap">500+ Hewan<br/>Dirawat</p>
@@ -197,7 +178,6 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Stats bar */}
         <div className="max-w-6xl mx-auto px-6 pb-14">
           <div className="bg-[#FF7A00] rounded-3xl px-6 py-7 grid grid-cols-3 text-white text-center shadow-xl shadow-orange-400/30">
             {STATS.map(s=>(
@@ -210,23 +190,18 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── BOOK A CALL ── */}
-      <section className="py-20 bg-white">
+      <section className="py-14 bg-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div>
             <SectionLabel>📞 Hubungi Kami</SectionLabel>
             <SectionTitle>Yuk, buat janji temu<br/>dan tetap terhubung</SectionTitle>
-            <div className="mt-6 space-y-2 mb-6">
+            <div className="mt-6 space-y-2.5 mb-7">
               {["Konsultasi gratis untuk kunjungan pertama","Dokter hewan berpengalaman & bersertifikat","Layanan darurat tersedia setiap saat"].map(t=>(
-                <div key={t} className="flex items-center gap-2 text-sm text-slate-600">
+                <div key={t} className="flex items-center gap-2.5 text-sm text-slate-600">
                   <span className="w-5 h-5 bg-orange-100 text-[#FF7A00] rounded-full flex items-center justify-center text-xs font-bold shrink-0">✓</span>{t}
                 </div>
               ))}
             </div>
-            <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-md">
-              Tim kami siap membantu hewan kesayangan Anda mendapatkan perawatan terbaik.
-              Hubungi kami sekarang — konsultasi pertama gratis!
-            </p>
             <div className="flex flex-wrap gap-3">
               <a href="tel:+6281234567890"
                 className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center gap-2 text-sm">
@@ -238,25 +213,13 @@ export default function Landing() {
               </a>
             </div>
           </div>
-          <div className="relative flex justify-center items-center py-12 px-12">
-            {/* Lingkaran background putih/abu muda */}
+          <div className="relative flex justify-center items-center py-10 px-10">
             <div className="w-64 h-64 md:w-72 md:h-72 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center">
               <img src="/images/veterinarian-pet.PNG" alt="Dokter Hewan"
                 className="w-full h-full object-cover object-top"
                 onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:5rem">👩‍⚕️</span>';}}/>
             </div>
-
-            {/* Floating card kanan atas — 24/7 Emergency */}
-            <div className="absolute top-4 right-0 bg-white rounded-2xl shadow-xl px-5 py-3.5 border border-slate-50">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-base">🩺</span>
-                <p className="text-sm font-black text-[#212153]">Darurat Kapan Saja</p>
-              </div>
-              <p className="text-xs text-slate-400 leading-relaxed">Kami selalu siap untuk hewan Anda</p>
-            </div>
-
-            {/* Floating chip kiri bawah */}
-            <div className="absolute bottom-4 left-0 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3 border border-slate-50">
+            <div className="absolute bottom-2 left-0 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 border border-slate-100">
               <div className="w-9 h-9 bg-orange-100 rounded-xl flex items-center justify-center text-lg shrink-0">📅</div>
               <div>
                 <p className="text-xs font-black text-[#212153]">Jadwal Fleksibel</p>
@@ -267,10 +230,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── SERVICES ── */}
-      <section id="services" className="py-20 bg-[#FEF6EE]">
+      <section id="services" className="py-16 bg-[#FEF6EE]">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <SectionLabel>✨ Yang Kami Tawarkan</SectionLabel>
             <SectionTitle>Layanan Kami</SectionTitle>
             <p className="text-slate-500 mt-3 max-w-md mx-auto text-sm">
@@ -291,8 +253,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── FACILITIES ── */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div>
             <SectionLabel>🏥 Fasilitas Kami</SectionLabel>
@@ -313,16 +274,13 @@ export default function Landing() {
             </div>
           </div>
           <div className="flex justify-center">
-            {/* Wrapper dengan padding supaya card tidak terpotong */}
             <div className="relative pb-8 pr-8">
-              {/* Lingkaran background krem/peach */}
               <div className="w-60 h-60 md:w-72 md:h-72 rounded-full bg-orange-100 overflow-hidden flex items-center justify-center shadow-sm">
                 <img src="/images/dog-standing.png" alt="Dog"
                   className="w-full h-full object-contain scale-110"
                   onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:5rem">🐕</span>';}}/>
               </div>
 
-              {/* Floating badge "1300+" — pojok kanan bawah keluar dari lingkaran */}
               <div className="absolute bottom-0 right-0 bg-[#FF7A00] text-white rounded-2xl px-6 py-4 shadow-2xl shadow-orange-400/40 text-center">
                 <p className="font-black text-2xl leading-none">50+</p>
                 <p className="text-xs text-orange-100 mt-1 font-medium">Perawatan/Bulan</p>
@@ -332,10 +290,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── TEAM / GROOMERS ── */}
-      <section id="team" className="py-20 bg-[#FEF6EE]">
+      <section id="team" className="py-16 bg-[#FEF6EE]">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <SectionLabel>👨‍⚕️ Tim Profesional</SectionLabel>
             <SectionTitle>Tim Perawat Kami</SectionTitle>
             <p className="text-slate-500 mt-3 max-w-sm mx-auto text-sm">
@@ -356,10 +313,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── BLOG ── */}
-      <section id="blog" className="py-20 bg-white">
+      <section id="blog" className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <SectionLabel>📰 Artikel Terbaru</SectionLabel>
             <SectionTitle>Blog Mew</SectionTitle>
           </div>
@@ -382,82 +338,71 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── JOIN SECTION (umum, bukan admin) ── */}
-      <section id="join" className="py-24 bg-[#FEF6EE]">
+      <section id="join" className="py-16 bg-[#FEF6EE]">
         <div className="max-w-5xl mx-auto px-6">
 
-          {/* Heading */}
-          <div className="text-center mb-14">
-            <span className="inline-flex items-center gap-2 bg-orange-100 text-[#FF7A00] text-xs font-bold px-4 py-2 rounded-full mb-5">
-              🐾 Komunitas Mew
-            </span>
-            <h2 className="text-3xl md:text-4xl font-black text-[#212153] mb-4">
-              Bergabung Bersama<br />Komunitas Pecinta Hewan 🧡
-            </h2>
-            <p className="text-slate-500 text-base leading-relaxed max-w-xl mx-auto">
-              Jadilah bagian dari komunitas Mew! Daftar akun gratis dan nikmati
-              berbagai keuntungan — mulai dari jadwal mudah, rekam kesehatan hewan,
-              promo member, hingga konsultasi online dengan dokter kami.
-            </p>
-          </div>
+          <div className="bg-gradient-to-br from-[#212153] to-indigo-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="grid md:grid-cols-2 gap-0">
 
-          {/* Perks grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
-            {JOIN_PERKS.map((p,i)=>(
-              <div key={i} className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-center border border-orange-50">
-                <span className="text-3xl">{p.icon}</span>
-                <h4 className="font-extrabold text-[#212153] text-sm mt-3 mb-1">{p.title}</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">{p.desc}</p>
+              <div className="p-10 flex flex-col justify-center">
+                <span className="inline-flex items-center gap-2 bg-white/10 text-orange-200 text-xs font-bold px-3 py-1.5 rounded-full mb-5 w-fit border border-white/10">
+                  🐾 Bergabung Gratis
+                </span>
+                <h2 className="text-2xl md:text-3xl font-black text-white mb-4 leading-tight">
+                  Daftar dan dapatkan<br />
+                  <span className="text-[#FF7A00]">berbagai manfaat</span> eksklusif
+                </h2>
+                <p className="text-indigo-300 text-sm leading-relaxed mb-8">
+                  Jadwal fleksibel, rekam medis digital, promo anggota,
+                  dan konsultasi daring — semua dalam satu akun gratis.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link to="/daftar"
+                    className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-7 py-3 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95 text-sm flex items-center justify-center gap-2">
+                    🐾 Daftar Gratis Sekarang
+                  </Link>
+                  <Link to="/masuk"
+                    className="bg-white/10 hover:bg-white/20 border border-white/20 text-indigo-200 hover:text-white font-semibold text-sm px-7 py-3 rounded-xl transition-all flex items-center justify-center gap-1">
+                    Sudah punya akun? Masuk →
+                  </Link>
+                </div>
+                <p className="text-indigo-500 text-xs mt-5">
+                  Admin klinik?{" "}
+                  <Link to="/login" className="text-indigo-400 hover:text-[#FF7A00] font-semibold underline transition-colors">
+                    Login dashboard admin
+                  </Link>
+                </p>
               </div>
-            ))}
-          </div>
 
-          {/* Link ke halaman promo */}
-          <div className="text-center mb-8">
-            <Link to="/daftar"
-              className="inline-flex items-center gap-2 bg-white border-2 border-[#FF7A00] text-[#FF7A00] hover:bg-[#FF7A00] hover:text-white font-bold px-6 py-3 rounded-xl transition-all text-sm">
-              🎁 Lihat Semua Promo & Benefit Member
-            </Link>
-          </div>
+              <div className="p-10 border-t md:border-t-0 md:border-l border-white/10 flex flex-col justify-center gap-4">
+                {JOIN_PERKS.map((p) => (
+                  <div key={p.title} className="flex items-start gap-3">
+                    <span className="w-9 h-9 bg-white/10 rounded-xl flex items-center justify-center text-lg shrink-0 border border-white/10">
+                      {p.icon}
+                    </span>
+                    <div>
+                      <p className="text-white font-bold text-sm">{p.title}</p>
+                      <p className="text-indigo-400 text-xs mt-0.5 leading-relaxed">{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
+                <div className="pt-4 border-t border-white/10 mt-1">
+                  <Link to="/promo"
+                    className="text-xs text-[#FF7A00] font-bold hover:underline flex items-center gap-1">
+                    🎁 Lihat semua promo & manfaat anggota →
+                  </Link>
+                </div>
+              </div>
 
-          {/* CTA card */}
-          <div className="bg-gradient-to-br from-[#212153] to-indigo-800 rounded-3xl p-10 text-center shadow-2xl">
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
-              Siap Bergabung Bersama Kami?
-            </h3>
-            <p className="text-indigo-200 text-sm mb-8 max-w-md mx-auto">
-              Daftarkan diri Anda sekarang — gratis, mudah, dan tanpa syarat apapun.
-              Mulai perjalanan merawat hewan kesayangan bersama komunitas Mew.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/register"
-                className="bg-[#FF7A00] hover:bg-[#FF9F43] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95 text-base flex items-center gap-2">
-                🐾 Daftar Gratis Sekarang
-              </Link>
-              <Link to="/login"
-                className="text-indigo-200 hover:text-white font-semibold text-sm transition-colors flex items-center gap-1">
-                Sudah punya akun? Masuk di sini →
-              </Link>
             </div>
-            <p className="text-indigo-400 text-xs mt-6">
-              Dengan mendaftar, kamu menyetujui syarat & ketentuan Klinik Mew.
-            </p>
           </div>
 
-          <p className="text-center text-slate-400 text-xs mt-8">
-            Admin klinik?{" "}
-            <Link to="/login" className="text-slate-500 hover:text-[#FF7A00] font-semibold underline transition-colors">
-              Akses dashboard admin di sini
-            </Link>
-          </p>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
       <footer className="bg-[#212153] text-white pt-16 pb-8">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-10 mb-10">
 
-          {/* Brand */}
           <div>
             <span className="text-2xl font-black">MEW<span className="text-[#FF7A00]">.</span></span>
             <p className="text-indigo-300 text-sm mt-4 leading-relaxed">

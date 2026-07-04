@@ -20,34 +20,42 @@ import {
 const EMPTY_FORM = { full_name: "", email: "", password: "", role: "admin" };
 const ITEMS_PER_PAGE = 5;
 
+const AVATAR_COLORS = [
+  "from-[#FF7A00] to-orange-400",
+  "from-violet-500 to-purple-600",
+  "from-teal-400 to-emerald-500",
+  "from-pink-400 to-rose-500",
+  "from-blue-400 to-indigo-500",
+];
+
 const getInitials = (name) =>
   name ? name.split(" ").map((w) => w[0]).join("").substring(0, 2).toUpperCase() : "??";
 
-const ROLE_COLOR = {
-  admin: "bg-orange-50 text-[#FF7A00] border-orange-100",
-  user:  "bg-blue-50 text-blue-600 border-blue-100",
+const getAvatarColor = (name) =>
+  AVATAR_COLORS[(name?.charCodeAt(0) ?? 0) % AVATAR_COLORS.length];
+
+const ROLE_STYLE = {
+  admin: { cls: "bg-orange-50 text-[#FF7A00] border-orange-100", label: "🛡️ Admin" },
+  user:  { cls: "bg-blue-50 text-blue-600 border-blue-100",       label: "👤 User"  },
 };
 
 export default function Users() {
-  const [users,      setUsers]      = useState([]);
-  const [loading,    setLoading]    = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error,      setError]      = useState(null);
-  const [search,     setSearch]     = useState("");
-  const [showModal,  setShowModal]  = useState(false);
-  const [editTarget, setEditTarget] = useState(null);
-  const [deleteId,   setDeleteId]   = useState(null);
-  const [form,       setForm]       = useState(EMPTY_FORM);
-  const [errors,     setErrors]     = useState({});
-  const [currentPage,setCurrentPage]= useState(1);
-  const [toast,      setToast]      = useState({ visible: false, message: "", type: "success" });
+  const [users,       setUsers]       = useState([]);
+  const [loading,     setLoading]     = useState(true);
+  const [submitting,  setSubmitting]  = useState(false);
+  const [error,       setError]       = useState(null);
+  const [search,      setSearch]      = useState("");
+  const [showModal,   setShowModal]   = useState(false);
+  const [editTarget,  setEditTarget]  = useState(null);
+  const [deleteId,    setDeleteId]    = useState(null);
+  const [form,        setForm]        = useState(EMPTY_FORM);
+  const [errors,      setErrors]      = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [toast,       setToast]       = useState({ visible: false, message: "", type: "success" });
 
   const nameInputRef = useRef(null);
+  const showToast = (msg, type = "success") => setToast({ visible: true, message: msg, type });
 
-  const showToast = (msg, type = "success") =>
-    setToast({ visible: true, message: msg, type });
-
-  // ── Fetch data dari Supabase saat komponen mount ──
   useEffect(() => { fetchData(); }, []);
 
   const fetchData = async () => {
@@ -78,7 +86,6 @@ export default function Users() {
     return Object.keys(e).length === 0;
   };
 
-  // ── Create / Update ──
   const handleSave = async (e) => {
     if (e) e.preventDefault();
     if (!validate()) return;
@@ -92,7 +99,7 @@ export default function Users() {
       } else {
         await profilesAPI.createProfile({
           full_name: form.full_name, email: form.email,
-          password: form.password,  role: form.role,
+          password: form.password, role: form.role,
           created_at: new Date().toISOString(),
         });
         showToast("User baru berhasil ditambahkan!", "success");
@@ -106,7 +113,6 @@ export default function Users() {
     }
   };
 
-  // ── Delete ──
   const handleDelete = async () => {
     try {
       await profilesAPI.deleteProfile(deleteId);
@@ -131,17 +137,15 @@ export default function Users() {
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  // ── Loading ──
   if (loading) return (
-    <div className="flex flex-col items-center justify-center py-24 gap-4">
-      <div className="w-10 h-10 border-4 border-[#FF7A00] border-t-transparent rounded-full animate-spin" />
+    <div className="flex flex-col items-center justify-center py-32 gap-4">
+      <div className="w-12 h-12 border-4 border-[#FF7A00] border-t-transparent rounded-full animate-spin" />
       <p className="text-slate-500 font-semibold animate-pulse">Memuat data user...</p>
     </div>
   );
 
-  // ── Error ──
   if (error) return (
-    <div className="flex flex-col items-center justify-center py-24 gap-4">
+    <div className="flex flex-col items-center justify-center py-32 gap-4">
       <div className="bg-rose-50 border border-rose-200 text-rose-700 px-6 py-4 rounded-2xl text-sm font-bold">❌ {error}</div>
       <Button variant="outline" onClick={fetchData}>Coba Lagi</Button>
     </div>
@@ -149,64 +153,67 @@ export default function Users() {
 
   return (
     <div className="w-full">
-
       <PageHeader
         title="Manajemen User"
         subtitle="Kelola akun admin dan user yang bisa mengakses dashboard Mew."
         action={<Button variant="primary" onClick={openAdd}>+ Tambah User</Button>}
       />
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-6">
-        <StatCard title="Total User"  value={users.length}                                    icon="👤" color="blue"   />
-        <StatCard title="Role Admin"  value={users.filter((u) => u.role === "admin").length}  icon="🛡️" color="orange" />
-        <StatCard title="Role User"   value={users.filter((u) => u.role === "user").length}   icon="👥" color="green"  />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 mt-6">
+        <StatCard title="Total User"  value={users.length}                                   icon="👤" color="blue"   />
+        <StatCard title="Role Admin"  value={users.filter((u) => u.role === "admin").length} icon="🛡️" color="orange" />
+        <StatCard title="Role User"   value={users.filter((u) => u.role === "user").length}  icon="👥" color="green"  />
       </div>
 
-      {/* SearchBar */}
-      <div className="mb-6">
+      <div className="flex items-center justify-between mb-6">
         <SearchBar placeholder="Cari nama atau email..." value={search}
           onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
           className="w-full md:w-80" />
+        {search && (
+          <p className="text-sm text-slate-400 ml-4 shrink-0">
+            <span className="font-bold text-[#212153]">{filtered.length}</span> hasil
+          </p>
+        )}
       </div>
 
-      {/* List */}
       {paginated.length === 0 ? (
-        <EmptyState icon="👤" title="Belum ada user" description="Tambahkan user pertama untuk mulai mengelola akses dashboard."
+        <EmptyState icon="👤" title="Belum ada user"
+          description="Tambahkan user pertama untuk mulai mengelola akses dashboard."
           actionText="+ Tambah User" onAction={openAdd} />
       ) : (
         <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                {["User", "Email", "Role", "Dibuat", "Aksi"].map((h, i) => (
+              <tr className="bg-gray-50/80 border-b border-gray-100">
+                {["User", "Email", "Role", "Bergabung", "Aksi"].map((h, i) => (
                   <th key={h} className={`py-4 px-6 text-xs font-bold text-gray-400 uppercase tracking-wider ${i === 4 ? "text-right" : ""}`}>{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
-              {paginated.map((u) => (
-                <tr key={u.id} className="hover:bg-gray-50/50 transition-colors">
+            <tbody>
+              {paginated.map((u, idx) => (
+                <tr key={u.id}
+                  className={`hover:bg-orange-50/20 transition-colors ${idx !== paginated.length - 1 ? "border-b border-gray-50" : ""}`}>
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-400 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                      <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${getAvatarColor(u.full_name)} text-white flex items-center justify-center text-xs font-black shrink-0`}>
                         {getInitials(u.full_name)}
                       </div>
                       <span className="font-bold text-[#212153] text-sm">{u.full_name}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-sm text-gray-600">{u.email}</td>
+                  <td className="py-4 px-6 text-sm text-gray-500">{u.email}</td>
                   <td className="py-4 px-6">
-                    <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${ROLE_COLOR[u.role] || ROLE_COLOR.user}`}>
-                      {u.role || "user"}
+                    <span className={`px-3 py-1 text-xs font-bold rounded-full border ${(ROLE_STYLE[u.role] ?? ROLE_STYLE.user).cls}`}>
+                      {(ROLE_STYLE[u.role] ?? ROLE_STYLE.user).label}
                     </span>
                   </td>
-                  <td className="py-4 px-6 text-sm text-gray-500">
-                    {u.created_at ? new Date(u.created_at).toLocaleDateString("id-ID") : "-"}
+                  <td className="py-4 px-6 text-sm text-gray-400">
+                    {u.created_at ? new Date(u.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : "-"}
                   </td>
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Button variant="outline" size="sm" onClick={() => openEdit(u)}>Edit</Button>
+                      <Button variant="outline" size="sm" onClick={() => openEdit(u)}>✎ Edit</Button>
                       <Button variant="danger"  size="sm" onClick={() => setDeleteId(u.id)}>Hapus</Button>
                     </div>
                   </td>
@@ -214,20 +221,23 @@ export default function Users() {
               ))}
             </tbody>
           </table>
-          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          {totalPages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          )}
         </div>
       )}
 
-      {/* Modal Tambah / Edit */}
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="sm:max-w-[480px] bg-white rounded-3xl p-6">
           <DialogHeader>
             <DialogTitle className="text-xl font-extrabold text-[#212153]">
               {editTarget ? "Edit User" : "Tambah User Baru"}
             </DialogTitle>
+            <p className="text-sm text-gray-400 mt-1">
+              {editTarget ? "Perbarui data akun user." : "Buat akun baru untuk dashboard Mew."}
+            </p>
           </DialogHeader>
           <form onSubmit={handleSave} className="flex flex-col gap-4 my-2">
-            {/* Nama */}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-bold text-[#212153] ml-1">Nama Lengkap <span className="text-rose-500">*</span></label>
               <input ref={nameInputRef} type="text" placeholder="Contoh: Budi Santoso"
@@ -235,13 +245,11 @@ export default function Users() {
                 className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none text-slate-700 placeholder-slate-400 focus:bg-white focus:border-[#FF7A00] focus:ring-4 focus:ring-orange-500/10 disabled:opacity-50 transition-all w-full" />
               {errors.full_name && <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.full_name}</span>}
             </div>
-            {/* Email */}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-bold text-[#212153] ml-1">Email <span className="text-rose-500">*</span></label>
-              <InputField type="email" placeholder="Contoh: budi@email.com" value={form.email} onChange={set("email")} disabled={submitting} className="w-full" />
+              <InputField type="email" placeholder="budi@email.com" value={form.email} onChange={set("email")} disabled={submitting} className="w-full" />
               {errors.email && <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.email}</span>}
             </div>
-            {/* Password */}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-bold text-[#212153] ml-1">
                 Password {!editTarget && <span className="text-rose-500">*</span>}
@@ -250,13 +258,12 @@ export default function Users() {
               <InputField type="password" placeholder="Buat password" value={form.password} onChange={set("password")} disabled={submitting} className="w-full" />
               {errors.password && <span className="text-xs font-bold text-rose-500 ml-1">⚠ {errors.password}</span>}
             </div>
-            {/* Role */}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-bold text-[#212153] ml-1">Role</label>
               <select value={form.role} onChange={set("role")} disabled={submitting}
-                className="px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:bg-white focus:border-[#FF7A00] focus:ring-4 focus:ring-orange-500/10 disabled:opacity-50 transition-all">
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
+                className="px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:bg-white focus:border-[#FF7A00] focus:ring-4 focus:ring-orange-500/10 disabled:opacity-50 transition-all text-sm">
+                <option value="admin">🛡️ Admin</option>
+                <option value="user">👤 User</option>
               </select>
             </div>
           </form>
@@ -269,13 +276,12 @@ export default function Users() {
         </DialogContent>
       </Dialog>
 
-      {/* Confirm Delete */}
       <AlertDialog open={deleteId !== null} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent className="bg-white rounded-3xl p-6">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-lg font-extrabold text-[#212153]">Hapus User?</AlertDialogTitle>
             <AlertDialogDescription className="text-sm text-gray-500">
-              Akun user ini akan dihapus permanen.
+              Akun user ini akan dihapus permanen dan tidak bisa dipulihkan.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2 sm:gap-0">

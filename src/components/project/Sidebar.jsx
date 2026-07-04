@@ -1,10 +1,20 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { Toast } from "./Toast";
 import { useState } from "react";
 
+const NAV_ITEMS = [
+  { to: "/dashboard",              label: "Beranda",            icon: "📊", end: true  },
+  { to: "/dashboard/appointments", label: "Jadwal Temu",        icon: "📅", end: false },
+  { to: "/dashboard/services",     label: "Kelola Layanan",     icon: "🩺", end: false },
+  { to: "/dashboard/customers",    label: "Pelanggan & Hewan",  icon: "👥", end: false },
+  { to: "/dashboard/users",        label: "Manajemen Pengguna", icon: "👤", end: false },
+  { to: "/dashboard/membership",   label: "Keanggotaan",        icon: "🎖️", end: false },
+];
+
 export default function Sidebar() {
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
+  const location  = useLocation();
   const [toast, setToast] = useState({ visible: false, message: "", type: "success" });
 
   const handleLogout = async (e) => {
@@ -17,54 +27,45 @@ export default function Sidebar() {
     navigate("/");
   };
 
-  const activeClass = ({ isActive }) =>
-    isActive
-      ? "flex items-center gap-3.5 py-3 px-5 bg-gradient-to-r from-[#FF7A00] to-[#ff9130] text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-orange-500/25 scale-[1.02]"
-      : "flex items-center gap-3.5 py-3 px-5 text-slate-500 hover:bg-orange-50/60 hover:text-[#FF7A00] font-semibold rounded-xl transition-all duration-200 group";
+  const isActive = (to, end) =>
+    end ? location.pathname === to : location.pathname.startsWith(to);
 
   return (
-    <aside className="w-[280px] bg-white border-r border-slate-100/70 h-full hidden md:flex flex-col py-8 px-5 z-20 shrink-0">
+    <aside className="w-[260px] bg-white border-r border-slate-100/70 h-full hidden md:flex flex-col py-7 px-4 z-20 shrink-0">
 
-      {/* Logo */}
-      <div className="text-2xl font-black mb-10 px-4 text-[#212153] tracking-tight flex items-center gap-1 select-none">
-        MEW<span className="text-[#FF7A00] animate-pulse">.</span>
+      <div className="px-3 mb-8">
+        <div className="text-2xl font-black text-[#212153] tracking-tight flex items-center gap-0.5 select-none">
+          MEW<span className="text-[#FF7A00]">.</span>
+        </div>
+        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Panel Admin Klinik</p>
       </div>
 
-      {/* Menu */}
-      <div className="flex flex-col gap-2 flex-1">
-        <NavLink to="/dashboard" className={activeClass} end>
-          <span className="text-lg group-hover:scale-110 transition-transform">📊</span>
-          <span className="text-sm tracking-wide">Overview</span>
-        </NavLink>
-        <NavLink to="/dashboard/appointments" className={activeClass}>
-          <span className="text-lg group-hover:scale-110 transition-transform">📅</span>
-          <span className="text-sm tracking-wide">Appointments</span>
-        </NavLink>
-        <NavLink to="/dashboard/services" className={activeClass}>
-          <span className="text-lg group-hover:scale-110 transition-transform">📋</span>
-          <span className="text-sm tracking-wide">Manage Services</span>
-        </NavLink>
-        <NavLink to="/dashboard/customers" className={activeClass}>
-          <span className="text-lg group-hover:scale-110 transition-transform">👥</span>
-          <span className="text-sm tracking-wide">Customers & Pets</span>
-        </NavLink>
-        <NavLink to="/dashboard/users" className={activeClass}>
-          <span className="text-lg group-hover:scale-110 transition-transform">👤</span>
-          <span className="text-sm tracking-wide">Manajemen User</span>
-        </NavLink>
-        <NavLink to="/dashboard/membership" className={activeClass}>
-          <span className="text-lg group-hover:scale-110 transition-transform">🎖️</span>
-          <span className="text-sm tracking-wide">Membership</span>
-        </NavLink>
-      </div>
+      <nav className="flex flex-col gap-1 flex-1">
+        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-3 mb-2">Menu Utama</p>
+        {NAV_ITEMS.map(({ to, label, icon, end }) => {
+          const active = isActive(to, end);
+          return (
+            <NavLink key={to} to={to} end={end}
+              className={`flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all duration-200 group
+                ${active
+                  ? "bg-gradient-to-r from-[#FF7A00] to-[#ff9130] text-white shadow-md shadow-orange-400/25"
+                  : "text-slate-500 hover:bg-orange-50/70 hover:text-[#FF7A00]"
+                }`}>
+              <span className={`text-base transition-transform duration-200 ${active ? "" : "group-hover:scale-110"}`}>
+                {icon}
+              </span>
+              <span className="tracking-wide">{label}</span>
+              {active && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white/60" />}
+            </NavLink>
+          );
+        })}
+      </nav>
 
-      {/* Logout */}
-      <div className="border-t border-slate-100/80 pt-5 mt-auto">
+      <div className="border-t border-slate-100 pt-4 mt-2">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3.5 py-3 px-5 text-rose-500 hover:bg-rose-50/60 hover:text-rose-600 rounded-xl transition-all duration-200 font-bold text-sm text-left group"
-        >
-          <span className="text-lg group-hover:-translate-x-0.5 transition-transform">🚪</span>
+          className="w-full flex items-center gap-3 py-2.5 px-3 text-rose-400 hover:bg-rose-50/70 hover:text-rose-500 rounded-xl transition-all duration-200 font-semibold text-sm group">
+          <span className="text-base group-hover:-translate-x-0.5 transition-transform">🚪</span>
           <span className="tracking-wide">Keluar</span>
         </button>
       </div>
