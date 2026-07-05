@@ -10,7 +10,6 @@ export function Modal({ isOpen, onClose, title, children, footer }) {
 
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden z-10">
 
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50/50">
           <h3 className="text-xl font-extrabold text-[#212153]">{title}</h3>
           <button

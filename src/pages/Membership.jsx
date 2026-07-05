@@ -8,7 +8,6 @@ import { Toast } from "../components/project/Toast";
 import { useMembershipTiers } from "../hooks/useMembershipTiers";
 import { membershipAPI } from "../services/membershipAPI";
 
-// ── IMPORT SHADCN UI DIALOG COMPONENTS ──
 import {
   Dialog,
   DialogContent,
@@ -19,21 +18,18 @@ import {
 
 
 export default function Membership() {
-  // ── Ambil data dari Supabase via hook (sumber tunggal) ──
   const { tiers: memberships, setTiers: setMemberships } = useMembershipTiers();
 
   const [search, setSearch] = useState("");
   const [toast, setToast] = useState({ visible: false, message: "", type: "success" });
 
-  // ── STATE MANAJEMEN SHADCN UI DIALOG ──
   const [openUpgradeModal, setOpenUpgradeModal] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedTier, setSelectedTier] = useState(null);
 
-  // State Form Edit Benefit Tier
   const [editForm, setEditForm] = useState({ benefitsText: "", range: "" });
-  // State Form Upgrade Simulasi Individu
+ 
   const [upgradeForm, setUpgradeForm] = useState({ customerId: "", targetTier: "Gold" });
 
   const showToast = (message, type = "success") => {
@@ -63,7 +59,6 @@ export default function Membership() {
       .map((b) => b.trim())
       .filter((b) => b !== "");
 
-    // Optimistic update di UI
     setMemberships((prev) =>
       prev.map((item) =>
         item.id === selectedTier.id
@@ -72,7 +67,6 @@ export default function Membership() {
       )
     );
 
-    // Simpan ke Supabase → otomatis terbaca oleh guest & member
     try {
       await membershipAPI.updateTier(selectedTier.id, {
         range:    editForm.range,
@@ -111,14 +105,12 @@ export default function Membership() {
         }
       />
 
-      {/* Ringkasan Dashboard Stat Card */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-6">
         <StatCard title="Total Anggota"  value="800" icon="👥" color="blue" />
         <StatCard title="Anggota Aktif"  value="675" icon="⭐" color="orange" />
         <StatCard title="Reward Ditukar" value="248" icon="🎁" color="green" />
       </div>
 
-      {/* Kolom Filter Pencarian */}
       <div className="mb-6">
         <SearchBar
           placeholder="Cari tingkatan keanggotaan..."
@@ -128,7 +120,6 @@ export default function Membership() {
         />
       </div>
 
-      {/* Grid Katalog Kartu Membership */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filtered.map((item) => (
           <div
@@ -200,7 +191,6 @@ export default function Membership() {
         ))}
       </div>
 
-      {/* ── 1. MODAL SHADCN UI: UPGRADE MEMBERSHIP INDIVIDU ── */}
       <Dialog open={openUpgradeModal} onOpenChange={openUpgradeModal ? () => setOpenUpgradeModal(false) : undefined}>
         <DialogContent className="bg-white rounded-3xl p-6 sm:max-w-[420px]">
           <DialogHeader>
@@ -234,7 +224,6 @@ export default function Membership() {
         </DialogContent>
       </Dialog>
 
-      {/* ── 2. MODAL SHADCN UI: DETAIL BENEFIT MEMBERSHIP ── */}
       <Dialog open={openDetailModal} onOpenChange={openDetailModal ? () => setOpenDetailModal(false) : undefined}>
         <DialogContent className="bg-white rounded-3xl p-6 sm:max-w-[400px]">
           <DialogHeader>
@@ -264,7 +253,6 @@ export default function Membership() {
         </DialogContent>
       </Dialog>
 
-      {/* ── 3. MODAL SHADCN UI: EDIT DATA & ATURAN BENEFIT ── */}
       <Dialog open={openEditModal} onOpenChange={openEditModal ? () => setOpenEditModal(false) : undefined}>
         <DialogContent className="bg-white rounded-3xl p-6 sm:max-w-[450px]">
           <DialogHeader>
