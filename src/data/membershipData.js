@@ -1,12 +1,3 @@
-/**
- * membershipData.js — Satu-satunya sumber data tier membership.
- *
- * Edit di sini → otomatis berubah di:
- *  - Admin: src/pages/Membership.jsx
- *  - Member: src/pages/member/MemberHome.jsx
- *  - Guest:  src/pages/Promo.jsx
- */
-
 export const MEMBERSHIP_TIERS = [
   {
     id: 1,

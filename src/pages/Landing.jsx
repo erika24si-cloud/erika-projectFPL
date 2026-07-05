@@ -164,7 +164,6 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white font-sans">
 
-      {/* ── NAVBAR ── */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_8px_rgb(0,0,0,0.04)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
           <Link to="/" className="text-2xl font-black text-[#212153] shrink-0 select-none">
@@ -230,11 +229,9 @@ export default function Landing() {
         )}
       </header>
 
-      {/* ── HERO ── */}
       <section id="hero" className="bg-[#FEF6EE]">
         <div className="max-w-6xl mx-auto px-6 pt-16 pb-0 grid md:grid-cols-2 gap-12 items-start">
 
-          {/* Kiri */}
           <div className="pb-16">
             <span className="inline-flex items-center gap-2 bg-orange-100 text-[#FF7A00] text-xs font-bold px-3 py-1.5 rounded-full mb-6">
               🐾 Klinik Hewan Terpercaya di Jakarta
@@ -274,31 +271,26 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Kanan — kucing besar + anjing kecil overlap */}
           <div className="hidden md:flex justify-end items-start relative pt-8 pb-0">
 
             <div className="relative w-72 h-80">
 
-              {/* Gambar utama — kucing, card besar rounded kecuali pojok kiri bawah */}
               <div className="w-64 h-72 rounded-3xl rounded-bl-none bg-[#FBB034] overflow-hidden shadow-lg">
                 <img src="/images/hero-cat.png" alt="Kucing Lucu"
                   className="w-full h-full object-cover object-top"
                   onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:6rem;display:flex;align-items:center;justify-content:center;height:100%">🐱</span>';}}/>
               </div>
 
-              {/* Gambar kedua — anjing, card kecil overlap pojok kanan bawah */}
               <div className="absolute bottom-0 right-0 w-36 h-36 rounded-2xl bg-[#DDEEFF] overflow-hidden shadow-xl border-4 border-[#FEF6EE]">
                 <img src="/images/hero-dog.png" alt="Anjing Lucu"
                   className="w-full h-full object-cover object-top"
                   onError={e=>{e.target.style.display="none"; e.target.parentElement.innerHTML='<span style="font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%">🐶</span>';}}/>
               </div>
 
-              {/* Dekorasi bintang */}
               <div className="absolute top-2 -right-5 text-[#FF7A00] text-2xl select-none">✦</div>
               <div className="absolute -bottom-3 left-8 text-orange-300 text-base select-none">🐾</div>
             </div>
 
-            {/* Floating badge bawah kiri */}
             <div className="absolute bottom-10 -left-2 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 border border-slate-100">
               <div className="w-9 h-9 bg-green-100 rounded-xl flex items-center justify-center text-green-600 font-black text-base shrink-0">✓</div>
               <div>
@@ -309,7 +301,6 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Stats bar */}
         <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="bg-[#FF7A00] rounded-2xl px-6 py-5 grid grid-cols-3 text-white text-center">
             {STATS.map((s,i)=>(
@@ -322,7 +313,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── LAYANAN ── */}
       <section id="services" className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
@@ -349,7 +339,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── KENAPA PILIH KAMI ── */}
       <section className="py-16 bg-[#FEF6EE]">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
           <div>
@@ -433,7 +422,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── ARTIKEL ── */}
       <section id="blog" className="py-16 bg-[#FEF6EE]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
@@ -472,7 +460,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── BERGABUNG ── */}
       <section id="join" className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-6">
           <div className="bg-gradient-to-br from-[#212153] via-indigo-900 to-[#1a1840] rounded-3xl overflow-hidden shadow-2xl relative">
@@ -534,7 +521,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
       <footer className="bg-[#212153] text-white pt-14 pb-8">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-10 mb-10">
 

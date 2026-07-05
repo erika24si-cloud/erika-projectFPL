@@ -3,14 +3,12 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_SUPABASE_URL + "/rest/v1";
 const API_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Header standar Supabase REST API — sesuai modul
 export const headers = {
   apikey: API_KEY,
   Authorization: `Bearer ${API_KEY}`,
   "Content-Type": "application/json",
 };
 
-// ── TABEL: profiles (data akun user/admin) ───────────────────────────────────
 
 export const profilesAPI = {
   async fetchProfiles() {
@@ -31,7 +29,6 @@ export const profilesAPI = {
   },
 };
 
-// ── TABEL: customers (data pelanggan klinik hewan) ───────────────────────────
 
 export const customersAPI = {
   async fetchCustomers() {
@@ -52,7 +49,6 @@ export const customersAPI = {
   },
 };
 
-// ── TABEL: members (akun member/pelanggan umum) ──────────────────────────────
 
 export const membersAPI = {
   async fetchMembers() {

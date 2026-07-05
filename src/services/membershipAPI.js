@@ -10,8 +10,6 @@ const headers = {
   "Prefer": "return=representation",
 };
 
-// ── TABEL: membership_tiers ──────────────────────────────────────────────────
-// Kolom: id, level (text), range (text), benefits (text[]), status (text), members (int)
 
 export const membershipAPI = {
   async fetchTiers() {

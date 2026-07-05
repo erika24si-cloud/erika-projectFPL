@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { membershipAPI } from "../services/membershipAPI";
 
-// Data fallback jika Supabase belum disetup / offline
 const FALLBACK_TIERS = [
   {
     id: 1,
@@ -29,10 +28,6 @@ const FALLBACK_TIERS = [
   },
 ];
 
-/**
- * Hook untuk fetch data tier membership dari Supabase.
- * Jika gagal (tabel belum dibuat / offline), pakai data fallback.
- */
 export function useMembershipTiers() {
   const [tiers,   setTiers]   = useState([]);
   const [loading, setLoading] = useState(true);

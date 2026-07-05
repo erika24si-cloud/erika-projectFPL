@@ -17,6 +17,7 @@ const MemberHome     = lazy(() => import("./pages/member/MemberHome"));
 const MemberProfil   = lazy(() => import("./pages/member/MemberProfil"));
 const MemberHewan    = lazy(() => import("./pages/member/MemberHewan"));
 const MemberKunjungan= lazy(() => import("./pages/member/MemberKunjungan"));
+const MemberPembayaran= lazy(() => import("./pages/member/MemberPembayaran"));
 const AuthLayout     = lazy(() => import("./layouts/project/AuthLayout"));
 const Login          = lazy(() => import("./pages/auth/project/Login"));
 const Register       = lazy(() => import("./pages/auth/project/Register"));
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="profil"     element={<MemberProfil />} />
           <Route path="hewan"      element={<MemberHewan />} />
           <Route path="kunjungan"  element={<MemberKunjungan />} />
+          <Route path="bayar/:tier" element={<MemberPembayaran />} />
         </Route>
 
         <Route path="/dashboard" element={

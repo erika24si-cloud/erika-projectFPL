@@ -41,7 +41,6 @@ export function ConfirmDialog({
           <p className="text-slate-500 text-sm mt-2">{description}</p>
         </div>
 
-        {/* Tombol Aksi */}
         <div className="flex gap-3 w-full mt-2">
           <button
             onClick={onClose}

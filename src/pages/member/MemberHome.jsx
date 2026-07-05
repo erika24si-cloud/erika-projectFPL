@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Toast } from "../../components/project/Toast";
 import { useMembershipTiers } from "../../hooks/useMembershipTiers";
 import { supabase } from "../../lib/supabase";
@@ -129,6 +129,7 @@ function PromoModal({ promo, onClose }) {
 export default function MemberHome() {
   const { user }           = useAuth();
   const { tiers, loading } = useMembershipTiers();
+  const navigate           = useNavigate();
 
   const [activeTier,    setActiveTier]    = useState("Silver");
   const [kunjungan,     setKunjungan]     = useState([]);
@@ -140,29 +141,35 @@ export default function MemberHome() {
   const getInitials = (n) => n ? n.split(" ").map((w) => w[0]).join("").substring(0, 2).toUpperCase() : "A";
 
   useEffect(() => {
-    const fetchKunjungan = async () => {
+    if (!user) return;
+
+    const fetchAll = async () => {
       setLoadKunjungan(true);
       try {
-        const { data } = await supabase
-          .from("appointments")
-          .select("*")
-          .order("tanggal_transaksi", { ascending: false })
-          .limit(3);
-        if (data) setKunjungan(data);
+        const [tierRes, jadwalRes] = await Promise.all([
+          supabase.from("members").select("tier").eq("id", user.id).single(),
+          supabase.from("appointments").select("*")
+            .order("tanggal_transaksi", { ascending: false }).limit(3),
+        ]);
+
+        if (tierRes.data?.tier) {
+          setActiveTier(tierRes.data.tier);
+        } else {
+          const { data: profile } = await supabase
+            .from("profiles").select("tier").eq("id", user.id).single();
+          if (profile?.tier) setActiveTier(profile.tier);
+        }
+
+        if (jadwalRes.data) setKunjungan(jadwalRes.data);
       } catch { }
       finally { setLoadKunjungan(false); }
     };
-    fetchKunjungan();
-  }, []);
+
+    fetchAll();
+  }, [user]);
 
   const handleUpgrade = (tier) => {
-    if (tier.level === activeTier) return;
-    setActiveTier(tier.level);
-    setToast({
-      visible: true,
-      message: `Permintaan naik ke tingkatan ${tier.level} berhasil dikirim! Tim kami akan segera menghubungi kamu. 🐾`,
-      type: "success",
-    });
+    navigate(`/member/bayar/${tier.level}`);
   };
 
   const allPromos = tiers.flatMap((tier) =>
@@ -406,10 +413,11 @@ export default function MemberHome() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {tiers.map((tier) => {
-            const style      = TIER_STYLE[tier.level] ?? TIER_STYLE.Silver;
-            const isActive   = activeTier === tier.level;
-            const canUpgrade = TIER_ORDER[tier.level] > TIER_ORDER[activeTier];
+          {tiers.map((tier, tierIdx) => {
+            const style        = TIER_STYLE[tier.level] ?? TIER_STYLE.Silver;
+            const isActive     = activeTier === tier.level;
+            const activeIdx    = tiers.findIndex((t) => t.level === activeTier);
+            const canUpgrade   = tierIdx > activeIdx;
             return (
               <div key={tier.id}
                 className={`relative rounded-3xl border-2 p-6 transition-all
@@ -441,7 +449,7 @@ export default function MemberHome() {
                 ) : canUpgrade ? (
                   <button onClick={() => handleUpgrade(tier)}
                     className={`w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all active:scale-95 shadow-md ${style.btn}`}>
-                    Naik ke {tier.level} →
+                    🛒 Naik ke {tier.level}
                   </button>
                 ) : (
                   <button disabled className="w-full py-2.5 rounded-xl text-sm font-bold bg-slate-100 text-slate-400 cursor-not-allowed">
@@ -455,7 +463,7 @@ export default function MemberHome() {
       )}
 
       <p className="text-xs text-slate-400 mt-4 text-center">
-        Kenaikan tingkatan diproses oleh admin setelah verifikasi akumulasi transaksi kamu.
+        Klik tombol "Naik ke X" untuk melanjutkan ke halaman pembayaran.
       </p>
 
       {activePromo && (

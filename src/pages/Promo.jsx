@@ -175,7 +175,6 @@ export default function Promo() {
   return (
     <div className="min-h-screen bg-[#FEF6EE]">
 
-      {/* Navbar */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_8px_rgb(0,0,0,0.04)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
           <Link to="/" className="text-2xl font-black text-[#212153] shrink-0 select-none">
@@ -250,7 +249,6 @@ export default function Promo() {
         </div>
       </section>
 
-      {/* Tingkatan */}
       <section id="tiers" className="py-12 bg-[#FEF6EE]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-8">
@@ -299,7 +297,6 @@ export default function Promo() {
         </div>
       </section>
 
-      {/* Daftar Promo */}
       <section id="promo-list" className="py-12 bg-white">
         <div className="max-w-6xl mx-auto px-6">
 
@@ -380,7 +377,6 @@ export default function Promo() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-12 bg-[#FEF6EE]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="bg-gradient-to-br from-[#212153] to-indigo-800 rounded-3xl overflow-hidden">
