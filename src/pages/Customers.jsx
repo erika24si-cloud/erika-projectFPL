@@ -225,22 +225,8 @@ export default function Customers() {
                 <span className="text-xs text-gray-300">
                   {c.created_at ? new Date(c.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : ""}
                 </span>
-                <button onClick={() => openEdit(c)}
-                  className="p-2 text-gray-400 hover:text-[#FF7A00] hover:bg-orange-50 rounded-xl transition-colors"
-                  aria-label="Edit pelanggan">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                  </svg>
-                </button>
-                <button onClick={() => setDeleteId(c.id)}
-                  className="p-2 text-gray-400 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-colors"
-                  aria-label="Hapus pelanggan">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                    <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-                  </svg>
-                </button>
+                <Button variant="outline" size="sm" onClick={() => openEdit(c)}>✎ Edit</Button>
+                <Button variant="danger" size="sm" onClick={() => setDeleteId(c.id)}>Hapus</Button>
               </div>
             </div>
           ))}
