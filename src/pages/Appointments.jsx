@@ -81,6 +81,7 @@ export default function Appointments() {
   const [currentPage,  setCurrentPage]  = useState(1);
   const [showModal,    setShowModal]    = useState(false);
   const [deleteId,     setDeleteId]     = useState(null);
+  const [editTarget,   setEditTarget]   = useState(null);
   const [editStatus,   setEditStatus]   = useState(null);
   const [form,         setForm]         = useState(EMPTY_FORM);
   const [errors,       setErrors]       = useState({});
@@ -121,6 +122,27 @@ export default function Appointments() {
 
   const handleTabChange = (id) => { setActiveTab(id); setCurrentPage(1); };
 
+  const openAdd = () => {
+    setEditTarget(null);
+    setForm(EMPTY_FORM);
+    setErrors({});
+    setShowModal(true);
+  };
+
+  const openEdit = (apt) => {
+    setEditTarget(apt.id_customer);
+    setForm({
+      owner: apt.nama_lengkap ?? "",
+      pet: apt.nama_hewan ?? "",
+      jenis: apt.jenis_hewan ?? "Kucing",
+      service: apt.layanan ?? "",
+      date: apt.tanggal_transaksi ?? "",
+      time: (apt.waktu ?? "").replace(" WIB", ""),
+    });
+    setErrors({});
+    setShowModal(true);
+  };
+
   const validate = () => {
     const e = {};
     if (!form.owner.trim()) e.owner = "Nama pelanggan wajib diisi.";
@@ -135,27 +157,66 @@ export default function Appointments() {
   const handleSave = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    const newRow = {
-      id_customer: `CUST${Date.now()}`,
+
+    const payload = {
       nama_lengkap: form.owner,
       nama_hewan: form.pet,
       jenis_hewan: form.jenis,
       layanan: form.service,
       tanggal_transaksi: form.date,
       waktu: `${form.time} WIB`,
-      status_aktif: "Menunggu",
     };
+
     try {
-      const { error } = await supabase.from("appointments").insert(newRow);
-      if (error) throw error;
-      fetchData();
+      if (editTarget) {
+        const current = appointments.find((a) => a.id_customer === editTarget);
+        const { error } = await supabase
+          .from("appointments")
+          .update({ ...payload, status_aktif: current?.status_aktif ?? "Menunggu" })
+          .eq("id_customer", editTarget);
+        if (error) throw error;
+
+        setAppointments((prev) =>
+          prev.map((a) =>
+            a.id_customer === editTarget ? { ...a, ...payload, status_aktif: current?.status_aktif ?? "Menunggu" } : a
+          )
+        );
+        showToast("Jadwal berhasil diperbarui!", "success");
+      } else {
+        const newRow = {
+          id_customer: `CUST${Date.now()}`,
+          ...payload,
+          status_aktif: "Menunggu",
+        };
+        const { error } = await supabase.from("appointments").insert(newRow);
+        if (error) throw error;
+        setAppointments((prev) => [newRow, ...prev]);
+        showToast("Jadwal baru berhasil ditambahkan!", "success");
+      }
     } catch {
-      setAppointments((prev) => [newRow, ...prev]);
+      if (editTarget) {
+        const current = appointments.find((a) => a.id_customer === editTarget);
+        setAppointments((prev) =>
+          prev.map((a) =>
+            a.id_customer === editTarget ? { ...a, ...payload, status_aktif: current?.status_aktif ?? "Menunggu" } : a
+          )
+        );
+        showToast("Jadwal berhasil diperbarui (lokal).", "success");
+      } else {
+        const newRow = {
+          id_customer: `CUST${Date.now()}`,
+          ...payload,
+          status_aktif: "Menunggu",
+        };
+        setAppointments((prev) => [newRow, ...prev]);
+        showToast("Jadwal baru berhasil ditambahkan (lokal).", "success");
+      }
     }
+
     setShowModal(false);
+    setEditTarget(null);
     setForm(EMPTY_FORM);
     setErrors({});
-    showToast("Jadwal baru berhasil ditambahkan!", "success");
   };
 
   const handleStatusChange = async (id, newStatus) => {
@@ -183,7 +244,7 @@ export default function Appointments() {
       <PageHeader
         title="Jadwal Temu"
         subtitle="Pantau dan kelola jadwal reservasi pelanggan klinik Mew."
-        action={<Button variant="primary" onClick={() => { setForm(EMPTY_FORM); setErrors({}); setShowModal(true); }}>+ Buat Jadwal Baru</Button>}
+        action={<Button variant="primary" onClick={openAdd}>+ Buat Jadwal Baru</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 mt-6">
@@ -282,7 +343,10 @@ export default function Appointments() {
                     )}
                   </TableCell>
                   <TableCell className="text-right pr-6">
-                    <Button variant="danger" size="sm" onClick={() => setDeleteId(apt.id_customer)}>Hapus</Button>
+                    <div className="flex items-center justify-end gap-2">
+                      <Button variant="outline" size="sm" onClick={() => openEdit(apt)}>✎ Edit</Button>
+                      <Button variant="danger" size="sm" onClick={() => setDeleteId(apt.id_customer)}>Hapus</Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -297,8 +361,12 @@ export default function Appointments() {
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="sm:max-w-[520px] bg-white rounded-3xl p-6">
           <DialogHeader>
-            <DialogTitle className="text-xl font-extrabold text-[#212153]">Buat Jadwal Baru</DialogTitle>
-            <p className="text-sm text-gray-400 mt-1">Isi data jadwal reservasi pelanggan.</p>
+            <DialogTitle className="text-xl font-extrabold text-[#212153]">
+              {editTarget ? "Edit Jadwal" : "Buat Jadwal Baru"}
+            </DialogTitle>
+            <p className="text-sm text-gray-400 mt-1">
+              {editTarget ? "Perbarui data jadwal reservasi pelanggan." : "Isi data jadwal reservasi pelanggan."}
+            </p>
           </DialogHeader>
           <form onSubmit={handleSave} className="flex flex-col gap-4 my-2">
             <div className="grid grid-cols-2 gap-4">
@@ -333,7 +401,9 @@ export default function Appointments() {
           </form>
           <DialogFooter className="gap-2 sm:gap-0 mt-4">
             <Button variant="outline" onClick={() => setShowModal(false)}>Batal</Button>
-            <Button variant="primary" onClick={handleSave}>Simpan Jadwal</Button>
+            <Button variant="primary" onClick={handleSave}>
+              {editTarget ? "Simpan Perubahan" : "Simpan Jadwal"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
